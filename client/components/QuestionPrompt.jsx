@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 function QuestionPrompt({ promptsCount, addToPrompts }) {
   const [currentPrompt, setCurrentPrompt] = useState('');
 
   const handleChange = (event) => {
-    setCurrentPrompt(event.value);
+    setCurrentPrompt(event.target.value);
   }
-  useEffect(() => {
-    //doSomething
-    console.log(currentPrompt);
-  })
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    addToPrompts(prevPrompts => [...prevPrompts, currentPrompt]);
+    setCurrentPrompt('');
+  }
 
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <label> Question {promptsCount}
         <input
           name="question"
@@ -20,7 +22,7 @@ function QuestionPrompt({ promptsCount, addToPrompts }) {
           onChange={handleChange}
         />
       </label>
-      <button>Add Another Prompt</button><button>Finsih and Save</button>
+      <button>Add Another Prompt</button>
     </form>
   )
 }

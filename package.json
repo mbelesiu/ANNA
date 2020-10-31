@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev-build": "webpack --watch",
+    "dev-build": "webpack --watch --progress",
     "start": "nodemon server/index.js"
   },
   "repository": {
@@ -31,6 +31,8 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-speech-recognition": "^3.2.3",
+    "styled-components": "^5.2.1",
+    "underscore": "^1.11.0",
     "webpack": "^5.3.2"
   },
   "devDependencies": {
