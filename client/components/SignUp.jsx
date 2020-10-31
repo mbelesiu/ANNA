@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function SignUp({ dataSend }) {
+function SignUp({ showSignup, dataSend, soFetch }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
