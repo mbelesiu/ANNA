@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
 
-function SignUp({ showSignup, dataSend, soFetch }) {
+function SignUp({ display, showSignup, dataSend, soFetch }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -28,32 +30,43 @@ function SignUp({ showSignup, dataSend, soFetch }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label> Username
+    <Modal
+      show={display}
+      onHide={() => showSignup(false)}
+      centered
+    >
+
+      <form onSubmit={handleSubmit}>
+        <label> Username
         <input
-          name="username"
-          value={username}
-          onChange={handleChange}
-        />
-      </label>
-      <label> Password
+            name="username"
+            value={username}
+            onChange={handleChange}
+          />
+        </label>
+        <label> Password
         <input
-          name="password"
-          value={password}
-          onChange={handleChange}
-        />
-      </label>
-      <label> Email
+            name="password"
+            value={password}
+            onChange={handleChange}
+          />
+        </label>
+        <label> Email
         <input
-          name="email"
-          type="email"
-          value={email}
-          onChange={handleChange}
-        />
-      </label>
-      <button>Add Another Prompt</button>
-    </form>
-  )
+            name="email"
+            type="email"
+            value={email}
+            onChange={handleChange}
+          />
+        </label>
+        <Button>Add Another Prompt</Button>
+      </form>
+
+
+      <Button onClick={showSignup}>Close</Button>
+
+    </Modal>
+  );
 }
 
 

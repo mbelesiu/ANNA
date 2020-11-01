@@ -33,7 +33,7 @@ function App() {
 
   return (
     <div>
-      <SignUp showSignup={init} dataSend = {submitSignUp} soFetch={getUserPrompts} />
+      <SignUp display={init} showSignup={setInit} dataSend = {submitSignUp} soFetch={getUserPrompts} />
       {newUser ? <div>
         <QuestionPrompt promptsCount={prompts.length + 1} addToPrompts={setPrompts} />
         <button onClick={submitPrompts}>Finsih and Save</button>
