@@ -2,28 +2,72 @@ const express = require('express');
 const db = require('../database');
 const bodyParser = require('body-parser');
 const path = require('path');
+const schedule = require('node-schedule');
+const mailer = require('./mailserver.js');
 
 const app = express();
+const aqlQuery = require('arangojs').aqlQuery;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '/../public')));
 
-app.post('/api/prompts/create', (req, res) => {
-  console.log(req.body);
-  res.sendStatus(200);
+
+const userTimeTable = {}
+const scheduleKeeper = (time, username) => schedule.scheduleJob(`${time[1]} ${time[0]} * * *`, function () {
+  console.log('The answer to life, the universe, and everything!');
+  mailer(username).catch(console.error);
+});
+
+//initlization of timetables
+
+db.query('FOR u IN Users RETURN { email: u.email, EOD: u.prompts.EOD }')
+  .then(({ _result }) => {
+    _result.forEach((savedUser)=>{
+      const time = savedUser.EOD.split(':');
+      userTimeTable[savedUser.email] = scheduleKeeper(time, savedUser.email);
+    });
+    //console.log(userTimeTable)
+  })
+  .catch((err) => console.log(err))
+
+app.post('/api/prompts/create/:username', (req, res) => {
+  const username = req.params.username
+  const prompts = req.body[0];
+  db.query(aqlQuery`FOR u IN Users FILTER u.email == ${username} UPDATE u WITH {prompts: ${prompts}} IN Users RETURN u`)
+    .then(() => {
+      const time = prompts.EOD.split(':')
+      console.log(time);
+      if (userTimeTable[username]) {
+        userTimeTable[username].cancel();
+      }
+      userTimeTable[username] = scheduleKeeper(time, username);
+      res.sendStatus(200);
+    })
+    .catch((err) => {
+      console.log(err)
+      res.sendStatus(404);
+    })
+
 })
 
 //a not so great login, but suitable for MVP
 app.get('/api/login/:username', (req, res) => {
   const username = req.params.username
-  console.log(username);
   const name = username.split('@')
-  console.log(name[0])
   db.query(`FOR u IN Users FILTER u.user == '${name[0]}' RETURN u`)
-    .then(( {_result} ) => {
-      console.log(_result)
-      res.send(_result)
+    .then(({ _result }) => {
+      if (_result.length === 0) {
+        db.query(`INSERT { email: "${username}", user: "${name[0]}", prompts: {} } INTO Users`)
+          .then(() => res.sendStatus(200))
+          .catch((err) => {
+            console.log(err)
+            res.sendStatus(404)
+          })
+      } else {
+        res.send(_result)
+      }
+
     })
     .catch((err) => {
       console.log(err);
