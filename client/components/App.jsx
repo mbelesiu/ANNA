@@ -11,6 +11,7 @@ function App() {
   const [init, setInit] = useState(true);
   const [newUser, setNewUser] = useState(false);
   const [prompts, setPrompts] = useState([]);
+  const [finalQuestion, setFinalQuestion] = useState(false);
 
   const getUserPrompts = (username) => {
     axios.get(`/api/login/${username}`)
@@ -20,17 +21,22 @@ function App() {
 
   const submitPrompts = (e) => {
     e.preventDefault();
-    const data = {};
-    prompts.forEach((prompt, i) => { data[`question${i}`] = prompt })
-    axios.post('/api/prompts/create', data)
-      .then(() => setNewUser(false))
-      .catch((err) => console.log(err))
+    if (!finalQuestion) {
+      setFinalQuestion(true);
+    } else {
+      const data = {};
+      prompts.forEach((prompt, i) => { data[`question${i}`] = prompt })
+      axios.post('/api/prompts/create', data)
+        .then(() => setNewUser(false))
+        .catch((err) => console.log(err))
+    }
+
   };
   const submitSignUp = (data) => {
     axios.get(`/api/login/${data}`)
-      .then((result) => {
-        console.log(result)
-        setNewUser(false)
+      .then(({ data }) => {
+        console.log(data)
+        data === "OK" ? setNewUser(true) : setNewUser(false)
       })
       .catch((err) => console.log(err))
   }
@@ -40,7 +46,7 @@ function App() {
     <Wrapper>
       <SignUp display={init} showSignup={setInit} dataSend={submitSignUp} soFetch={getUserPrompts} />
       {newUser ? <div>
-        <QuestionPrompt promptsCount={prompts.length + 1} addToPrompts={setPrompts} />
+        <QuestionPrompt promptsCount={prompts.length + 1} addToPrompts={setPrompts} finalQuestion={finalQuestion} />
         <button onClick={submitPrompts}>Finsih and Save</button>
         <p>{prompts}</p>
       </div> : <Dictaphone />}

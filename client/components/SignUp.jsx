@@ -7,16 +7,7 @@ function SignUp({ display, showSignup, dataSend, soFetch }) {
   // const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
 
-  const handleChange = (event) => {
-    // if (event.target.name === 'username') {
-    //   setUsername(event.target.value);
-    // } else if (event.target.name === 'password') {
-    //   setPassword(event.target.value);
-    // } else {
-    //   setEmail(event.target.value);
-    // }
-    setEmail(event.target.value);
-  }
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -37,7 +28,7 @@ function SignUp({ display, showSignup, dataSend, soFetch }) {
               name="email"
               type="email"
               value={email}
-              onChange={handleChange}
+              onChange={(e)=>setEmail(e.target.value)}
             />
           </label>
           <button>Login or Signup</button>
