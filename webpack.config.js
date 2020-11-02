@@ -20,5 +20,7 @@ module.exports = {
       },
     ],
   },
-
+  // externals: {
+  //   'styled-components': 'styled-components',
+  // },
 };
