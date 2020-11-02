@@ -14,8 +14,8 @@ function App() {
 
   const getUserPrompts = (username) => {
     axios.get(`/api/login/${username}`)
-    .then(({ data }) => console.log(data))
-    .catch((err) => (err));
+      .then(({ data }) => console.log(data))
+      .catch((err) => (err));
   }
 
   const submitPrompts = (e) => {
@@ -27,15 +27,18 @@ function App() {
       .catch((err) => console.log(err))
   };
   const submitSignUp = (data) => {
-    axios.post('/api/login/create', data)
-      .then(() => setNewUser(false))
+    axios.get(`/api/login/${data}`)
+      .then((result) => {
+        console.log(result)
+        setNewUser(false)
+      })
       .catch((err) => console.log(err))
   }
 
 
   return (
     <Wrapper>
-      <SignUp display={init} showSignup={setInit} dataSend = {submitSignUp} soFetch={getUserPrompts} />
+      <SignUp display={init} showSignup={setInit} dataSend={submitSignUp} soFetch={getUserPrompts} />
       {newUser ? <div>
         <QuestionPrompt promptsCount={prompts.length + 1} addToPrompts={setPrompts} />
         <button onClick={submitPrompts}>Finsih and Save</button>

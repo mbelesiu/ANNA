@@ -20,11 +20,7 @@ function SignUp({ display, showSignup, dataSend, soFetch }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    dataSend({
-      // username: username,
-      // password: password,
-      email: email
-    });
+    dataSend(email);
     showSignup(false);
   }
 

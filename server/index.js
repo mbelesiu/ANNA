@@ -23,9 +23,15 @@ const scheduleKeeper = (time, username) => schedule.scheduleJob(`${time[1]} ${ti
 
 db.query('FOR u IN Users RETURN { email: u.email, EOD: u.prompts.EOD }')
   .then(({ _result }) => {
-    _result.forEach((savedUser)=>{
-      const time = savedUser.EOD.split(':');
-      userTimeTable[savedUser.email] = scheduleKeeper(time, savedUser.email);
+    _result.forEach((savedUser) => {
+      if (!savedUser.EOD) {
+        db.query(aqlQuery`FOR u in Users FILTER u.email == ${savedUser.email} REMOVE u IN Users`).
+          then(() => console.log('delete incomplete data'))
+      } else {
+        const time = savedUser.EOD.split(':');
+        userTimeTable[savedUser.email] = scheduleKeeper(time, savedUser.email);
+      }
+
     });
     //console.log(userTimeTable)
   })
@@ -54,11 +60,10 @@ app.post('/api/prompts/create/:username', (req, res) => {
 //a not so great login, but suitable for MVP
 app.get('/api/login/:username', (req, res) => {
   const username = req.params.username
-  const name = username.split('@')
-  db.query(`FOR u IN Users FILTER u.user == '${name[0]}' RETURN u`)
+  db.query(aqlQuery`FOR u IN Users FILTER u.email == ${username} RETURN u`)
     .then(({ _result }) => {
       if (_result.length === 0) {
-        db.query(`INSERT { email: "${username}", user: "${name[0]}", prompts: {} } INTO Users`)
+        db.query(aqlQuery`INSERT { email: ${username}, prompts: {} } INTO Users`)
           .then(() => res.sendStatus(200))
           .catch((err) => {
             console.log(err)
