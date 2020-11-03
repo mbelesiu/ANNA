@@ -39,11 +39,12 @@ db.query('FOR u IN Users RETURN { email: u.email, EOD: u.prompts.EOD }')
 
 app.post('/api/prompts/create/:username', (req, res) => {
   const username = req.params.username
-  const prompts = req.body[0];
+  const prompts = req.body;
+  //  console.log(prompts)
   db.query(aqlQuery`FOR u IN Users FILTER u.email == ${username} UPDATE u WITH {prompts: ${prompts}} IN Users RETURN u`)
     .then(() => {
       const time = prompts.EOD.split(':')
-      console.log(time);
+      //  console.log(time);
       if (userTimeTable[username]) {
         userTimeTable[username].cancel();
       }

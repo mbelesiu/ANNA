@@ -5,17 +5,42 @@ import axios from 'axios';
 import Dictaphone from './Dictaphone.jsx';
 import QuestionPrompt from './QuestionPrompt.jsx';
 import SignUp from './SignUp.jsx';
+import Records from './Records.jsx';
+import Entry from './Entry.jsx';
 
+const dummyRecordData = [
+  {
+    id: '1',
+    date: 'March 5th, 1992',
+    body: 'In west Phill'
+  },
+  {
+    id: '2',
+    date: 'March 5th, 1992',
+    body: 'Born and raised'
+  },
+  {
+    id: '3',
+    date: 'March 5th, 1992',
+    body: 'oN A PLAYGROUND i SPENT MOST OF MY DAYS'
+  }
+
+]
 
 function App() {
   const [init, setInit] = useState(true);
   const [newUser, setNewUser] = useState(false);
   const [prompts, setPrompts] = useState([]);
   const [finalQuestion, setFinalQuestion] = useState(false);
+  const [currentUser, setCurrentUser] = useState();
+  const [records, setRecords] = useState(dummyRecordData);
+  const [currentRecord, setCurrentRecord] = useState(false);
+  const [promptTime, setPromptTime] = useState(false); //allowing user to answer prompt
+  const [showPromptModal, setshowPromptModal] = useState(false); //show quetionaire
 
   const getUserPrompts = (username) => {
     axios.get(`/api/login/${username}`)
-      .then(({ data }) => console.log(data))
+      .then(({ data }) => console.log('matt here', data))
       .catch((err) => (err));
   }
 
@@ -25,18 +50,31 @@ function App() {
       setFinalQuestion(true);
     } else {
       const data = {};
-      prompts.forEach((prompt, i) => { data[`question${i}`] = prompt })
-      axios.post('/api/prompts/create', data)
+      prompts.forEach((prompt, i) => {
+        if (i === prompts.length - 1) {
+          data["EOD"] = prompt
+        } else {
+          data[`question${i}`] = prompt
+        }
+      })
+      axios.post(`/api/prompts/create/${currentUser}`, data)
         .then(() => setNewUser(false))
         .catch((err) => console.log(err))
     }
 
   };
-  const submitSignUp = (data) => {
-    axios.get(`/api/login/${data}`)
+  const submitSignUp = (user) => {
+    axios.get(`/api/login/${user}`)
       .then(({ data }) => {
-        console.log(data)
-        data === "OK" ? setNewUser(true) : setNewUser(false)
+        data = data[0].prompts;
+        for (prompt in data) {
+          if (prompt !== 'EOD') {
+            setPrompts(prevPrompts => [...prevPrompts, data[prompt]]);
+          }
+
+        }
+        setCurrentUser(user);
+        data === "OK" ? setNewUser(true) : setNewUser(false);
       })
       .catch((err) => console.log(err))
   }
@@ -49,7 +87,7 @@ function App() {
         <QuestionPrompt promptsCount={prompts.length + 1} addToPrompts={setPrompts} finalQuestion={finalQuestion} />
         <button onClick={submitPrompts}>Finsih and Save</button>
         <p>{prompts}</p>
-      </div> : <Dictaphone />}
+      </div> : <div><Entry record={currentRecord} /> <Records records={records} showRecord={setCurrentRecord} /></div>}
     </Wrapper>
   )
 }
