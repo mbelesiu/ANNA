@@ -7,25 +7,17 @@ function QuestionPrompt({ promptsCount, addToPrompts, finalQuestion, setFinalQue
   // const [flag, setFlag] = useState(false);
   const currentQuestion = `question${promptsCount}`;
 
-  const handleSubmit = (event, boo, booboo) => {
+  const handleSubmit = (event, flag1, flag2) => {
     event.preventDefault();
-    console.log(boo);
     const promptToAdd = finalQuestion ? time : currentPrompt;
     addToPrompts(prevPrompts => [...prevPrompts, promptToAdd]);
     setCurrentPrompt('');
-    if(boo){
+    if(flag1){
       setFinalQuestion(true);
     }
-    if(booboo){
+    if(flag2){
       setFlag(true)
     }
-
-
-    // useEffect(()=>{
-    //   if(finalQuestion){
-    //     setFlag(true);
-    //   }
-    // },[currentPrompt])
 
   }
   if (!showQuestions) {

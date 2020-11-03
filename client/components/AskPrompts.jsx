@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-function AskPrompts({ prompts, showPrompts, hidePrompts, responses, setResponses}) {
+function AskPrompts({ prompts, showPrompts, hidePrompts, responses, setResponses, submitRecord}) {
   const [currentPrompt, setCurrentPrompt] = useState();
   const [currentResponse, setCurrentResponse] = useState('')
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -10,14 +10,14 @@ function AskPrompts({ prompts, showPrompts, hidePrompts, responses, setResponses
     e.preventDefault();
     const question = `question${currentQuestion + 1}`
     const r = responses;
-    r[question] = currentResponse;
-    console.log(r);
+    r[currentPrompt] = currentResponse;
     setResponses(r);
     setCurrentQuestion(currentQuestion + 1);
     setCurrentResponse('');
     if (currentQuestion === prompts.length-1) {
       setCurrentQuestion(0);
       hidePrompts(false);
+      submitRecord();
     }
   }
 

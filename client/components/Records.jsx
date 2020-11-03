@@ -1,8 +1,9 @@
 import React from 'react';
 import EntryTitle from './EntryTitle.jsx'
+import _ from 'underscore';
 
 function Records({ records, showRecord }) {
-  if (records.length === 0) {
+  if (_.size(records) === 0) {
     return (
       <div>
         <h3>No records have been created at this time</h3>

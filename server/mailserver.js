@@ -21,7 +21,7 @@ const mailer = async (recipient) => {
     to: recipient, // list of receivers
     subject: "It's Time to Update", // Subject line
     text: "It's time for you to make a new journal entry. Follow the link to login", // plain text body
-    html: "<b>It's time for you to make a new journal entry. Follow the link to login</b>", // html body
+    html: `<b>It's time for you to make a new journal entry. <a href="http://localhost:3000/">Click here to login </a></b>`, // html body
   });
 
   console.log("Message sent: %s", info.messageId);
