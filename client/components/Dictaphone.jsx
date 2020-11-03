@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 
-const Dictaphone = () => {
+const Dictaphone = ({ currentField }) => {
   const { transcript, resetTranscript } = useSpeechRecognition()
   const [listen, setListen] = useState([]);
+  const [shouldITellThemIAmListening, setShouldITellThemIAmListening] = useState(false)
 
   if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
-    return null
+    return (<div><p>Voice Recognition not supported by this browser</p></div>)
   }
   SpeechRecognition.startListening({ continuous: true })
   useEffect(() => {
@@ -15,25 +16,38 @@ const Dictaphone = () => {
     if (listen.length >= 2) {
       if (listen[0].toLowerCase() === 'hey' && listen[1].toLowerCase() === 'anna') {
         console.log('Hey Anna');
+        setShouldITellThemIAmListening(true);
         resetTranscript();
-        setListen(['','']);
+        setListen(['', '']);
       }
       if (listen[0].toLowerCase() === 'stop' && listen[1].toLowerCase() === 'listening') {
         console.log('Stop listening');
+        setShouldITellThemIAmListening(false);
+        let finalThought = transcript;
+        let lastIndex = finalThought.lastIndexOf(" ");
+        finalThought = finalThought.substring(0, lastIndex)
+        lastIndex = finalThought.lastIndexOf(" ");
+        finalThought = finalThought.substring(0, lastIndex)
+        console.log(finalThought)
+        currentField(finalThought);
         resetTranscript();
-        setListen(['','']);
+        setListen(['', '']);
       }
     }
 
-  }, [listen])
+  }, [listen]);
+
+  useEffect(() => {
+    if (shouldITellThemIAmListening) {
+      currentField(transcript);
+    }
+  }, [listen]);
+
 
 
   return (
     <div>
-      {/* <button onClick={SpeechRecognition.startListening({ continuous: true })}>Start</button> */}
-      <button onClick={SpeechRecognition.stopListening}>Stop</button>
-      <button onClick={resetTranscript}>Reset</button>
-      <p>{listen[0]}{listen[1]}</p>
+      <p>Powered by the future</p>
     </div>
   )
 }

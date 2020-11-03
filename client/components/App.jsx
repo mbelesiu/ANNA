@@ -126,7 +126,7 @@ function App() {
       <Entry record={currentRecord} hideCurrentRecord={() => setCurrentRecord(false)} />
       <Records records={records} showRecord={setCurrentRecord} />
       <button onClick={() => setShowPromptModal(true)}>SHOW ME THE PROMPTS</button>
-      <Dictaphone />
+
     </Wrapper>
   )
 }

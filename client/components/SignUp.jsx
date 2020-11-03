@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import 'materialize-css/dist/css/materialize.min.css';
 import 'materialize-css/dist/js/materialize.min';
 import { Modal, Button } from 'react-materialize';
-import styled from 'styled-components';
+
 
 function SignUp({ display, showSignup, dataSend }) {
   // const [username, setUsername] = useState('');
