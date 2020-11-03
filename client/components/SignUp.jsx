@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import styled from 'styled-components';
 
-function SignUp({ display, showSignup, dataSend, soFetch }) {
+function SignUp({ display, showSignup, dataSend }) {
   // const [username, setUsername] = useState('');
   // const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -22,6 +22,8 @@ function SignUp({ display, showSignup, dataSend, soFetch }) {
   return (
     <Modal>
       <ModalContent>
+        <h2>Welcome to ANNA</h2>
+        <h4>Please login with exisiting email, or sign up with new email</h4>
         <form onSubmit={handleSubmit}>
         <label> Email
         <input

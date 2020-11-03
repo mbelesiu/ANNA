@@ -1,43 +1,51 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-function AskPrompts({ prompts, showPrompts }) {
-  const [currentPrompt, setCurrentPrompt] = useState('');
-  const [response, setResponse] = useState({})
+function AskPrompts({ prompts, showPrompts, hidePrompts, responses, setResponses}) {
+  const [currentPrompt, setCurrentPrompt] = useState();
+  const [currentResponse, setCurrentResponse] = useState('')
   const [currentQuestion, setCurrentQuestion] = useState(0);
 
-  const handleSubmit = (event) => {
-    const r = {`question${currentQuestion + 1}`: currentPrompt
-  };
-  setResponse({ ...response, r });
-  setCurrentQuestion(currentQuestion + 1);
-}
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const question = `question${currentQuestion + 1}`
+    const r = responses;
+    r[question] = currentResponse;
+    console.log(r);
+    setResponses(r);
+    setCurrentQuestion(currentQuestion + 1);
+    setCurrentResponse('');
+    if (currentQuestion === prompts.length-1) {
+      setCurrentQuestion(0);
+      hidePrompts(false);
+    }
+  }
 
-useEffect(() => {
+  useEffect(() => {
+    setCurrentPrompt(prompts[currentQuestion]);
+  })
 
-}, [currentQuestion])
+  if (!showPrompts) {
+    return null;
+  }
 
-if (!showPrompts) {
-  return null;
-}
-
-return (
-  <Modal>
-    <ModalContent>
-      <form onSubmit={handleSubmit}>
-        <label> {currentQuestion}
-          <input
-            name={currentQuestion}
-            type="text"
-            value={currentPrompt}
-            onChange={(e) => setCurrentPrompt(e.target.value)}
-          />
-        </label>
-        <button>{currentQuestion !== prompts.length - 1 ? 'Next Prompt' : 'Submit Record'}</button>
-      </form>
-    </ModalContent>
-  </Modal>
-)
+  return (
+    <Modal>
+      <ModalContent>
+        <form onSubmit={handleSubmit}>
+          <label> {currentPrompt}
+            <input
+              name={`question${currentQuestion}`}
+              type="text"
+              value={currentResponse}
+              onChange={(e) => setCurrentResponse(e.target.value)}
+            />
+          </label>
+          <button>{currentQuestion !== (prompts.length - 1) ? 'Next Prompt' : 'Submit Record'}</button>
+        </form>
+      </ModalContent>
+    </Modal>
+  )
 }
 
 const Modal = styled.div`

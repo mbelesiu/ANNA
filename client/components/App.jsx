@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-
 import styled from 'styled-components';
 import axios from 'axios';
 import Dictaphone from './Dictaphone.jsx';
@@ -7,6 +6,7 @@ import QuestionPrompt from './QuestionPrompt.jsx';
 import SignUp from './SignUp.jsx';
 import Records from './Records.jsx';
 import Entry from './Entry.jsx';
+import AskPrompts from './AskPrompts.jsx';
 
 const dummyRecordData = [
   {
@@ -33,21 +33,39 @@ function App() {
   const [prompts, setPrompts] = useState([]);
   const [finalQuestion, setFinalQuestion] = useState(false);
   const [currentUser, setCurrentUser] = useState();
-  const [records, setRecords] = useState(dummyRecordData);
+  const [records, setRecords] = useState([]);
   const [currentRecord, setCurrentRecord] = useState(false);
   const [promptTime, setPromptTime] = useState(false); //allowing user to answer prompt
-  const [showPromptModal, setshowPromptModal] = useState(false); //show quetionaire
+  const [showPromptModal, setShowPromptModal] = useState(false); //show quetionaire
+  const [responses, setResponses] = useState({});
+  const [flag, setFlag] = useState(false);
 
   const getUserPrompts = (username) => {
-    axios.get(`/api/login/${username}`)
-      .then(({ data }) => console.log('matt here', data))
+    setPrompts([])
+    axios.get(`/api/prompts/${username}`)
+      .then(({ data }) => {
+        data = data[0].prompts;
+        for (prompt in data) {
+          if (prompt !== 'EOD') {
+            setPrompts(prevPrompts => [...prevPrompts, data[prompt]]);
+          }
+        }
+      })
       .catch((err) => (err));
   }
 
-  const submitPrompts = (e) => {
-    e.preventDefault();
-    if (!finalQuestion) {
-      setFinalQuestion(true);
+  const getUserRecords = (username) => {
+    axios.get(`/api/records/${username}`)
+      .then(({ data }) => {
+        console.log(data);
+        //check and see if there any records, if none, tell the user, otherwise, update records
+      })
+      .catch((err) => (err));
+  }
+
+  const submitPrompts = () => {
+    if (!flag) {
+      setFlag(true);
     } else {
       const data = {};
       prompts.forEach((prompt, i) => {
@@ -58,36 +76,60 @@ function App() {
         }
       })
       axios.post(`/api/prompts/create/${currentUser}`, data)
-        .then(() => setNewUser(false))
+        .then(() => {
+          setNewUser(false);
+          getUserPrompts(currentUser);
+        })
         .catch((err) => console.log(err))
     }
-
   };
+
+
   const submitSignUp = (user) => {
+
     axios.get(`/api/login/${user}`)
       .then(({ data }) => {
-        data = data[0].prompts;
-        for (prompt in data) {
-          if (prompt !== 'EOD') {
-            setPrompts(prevPrompts => [...prevPrompts, data[prompt]]);
-          }
-
-        }
         setCurrentUser(user);
-        data === "OK" ? setNewUser(true) : setNewUser(false);
+        if (data === "OK") {
+          setNewUser(true)
+        } else {
+          setNewUser(false);
+          data = data[0].prompts;
+          for (prompt in data) {
+            if (prompt !== 'EOD') {
+              setPrompts(prevPrompts => [...prevPrompts, data[prompt]]);
+            }
+          }
+        }
       })
       .catch((err) => console.log(err))
+
+
   }
 
+  useEffect(() => {
+    if (flag) {
+      submitPrompts()
+      setFinalQuestion(false);
+      setFlag(false);
+    }
+  }, [prompts]);
 
   return (
     <Wrapper>
-      <SignUp display={init} showSignup={setInit} dataSend={submitSignUp} soFetch={getUserPrompts} />
-      {newUser ? <div>
-        <QuestionPrompt promptsCount={prompts.length + 1} addToPrompts={setPrompts} finalQuestion={finalQuestion} />
-        <button onClick={submitPrompts}>Finsih and Save</button>
-        <p>{prompts}</p>
-      </div> : <div><Entry record={currentRecord} /> <Records records={records} showRecord={setCurrentRecord} /></div>}
+      <AskPrompts
+        prompts={prompts}
+        showPrompts={showPromptModal}
+        hidePrompts={setShowPromptModal}
+        responses={responses}
+        setResponses={setResponses}
+      />
+      <SignUp display={init} showSignup={setInit} dataSend={submitSignUp} />
+
+      <QuestionPrompt promptsCount={prompts.length + 1} addToPrompts={setPrompts} finalQuestion={finalQuestion} setFinalQuestion={setFinalQuestion} showQuestions={newUser} submitPrompts={submitPrompts} setFlag={setFlag} />
+      <Entry record={currentRecord} />
+      <Records records={records} showRecord={setCurrentRecord} />
+      <button onClick={() => setShowPromptModal(true)}>SHOW ME THE PROMPTS</button>
     </Wrapper>
   )
 }
