@@ -20,19 +20,6 @@ const Dictaphone = ({ currentField }) => {
         resetTranscript();
         setListen(['', '']);
       }
-      if (listen[0].toLowerCase() === 'stop' && listen[1].toLowerCase() === 'listening') {
-        console.log('Stop listening');
-        setShouldITellThemIAmListening(false);
-        let finalThought = transcript;
-        let lastIndex = finalThought.lastIndexOf(" ");
-        finalThought = finalThought.substring(0, lastIndex)
-        lastIndex = finalThought.lastIndexOf(" ");
-        finalThought = finalThought.substring(0, lastIndex)
-        console.log(finalThought)
-        currentField(finalThought);
-        resetTranscript();
-        setListen(['', '']);
-      }
     }
 
   }, [listen]);
@@ -40,6 +27,19 @@ const Dictaphone = ({ currentField }) => {
   useEffect(() => {
     if (shouldITellThemIAmListening) {
       currentField(transcript);
+      if (listen[0].toLowerCase() === 'stop' && listen[1].toLowerCase() === 'listening') {
+        console.log('Stop listening');
+        let finalThought = transcript;
+        let lastIndex = finalThought.lastIndexOf(" ");
+        finalThought = finalThought.substring(0, lastIndex)
+        lastIndex = finalThought.lastIndexOf(" ");
+        finalThought = finalThought.substring(0, lastIndex)
+        console.log(finalThought)
+        currentField(finalThought);
+        setShouldITellThemIAmListening(false);
+        resetTranscript();
+        setListen(['', '']);
+      }
     }
   }, [listen]);
 

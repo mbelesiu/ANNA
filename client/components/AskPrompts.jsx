@@ -23,7 +23,6 @@ function AskPrompts({ prompts, showPrompts, hidePrompts, responses, setResponses
       submitRecord();
     }
   }
-
   useEffect(() => {
     setCurrentPrompt(prompts[currentQuestion]);
   })
@@ -36,7 +35,7 @@ function AskPrompts({ prompts, showPrompts, hidePrompts, responses, setResponses
     <Modal
       bottomSheet={false}
       fixedFooter={false}
-      header="Welcome to ANNA"
+      header="Please Answer the Following Prompts"
       id="Modal-0"
       open={true}
       options={{
