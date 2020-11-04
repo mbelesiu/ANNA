@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import 'materialize-css/dist/css/materialize.min.css';
 import 'materialize-css/dist/js/materialize.min';
-import { Modal, Button } from 'react-materialize';
+import { Modal, Button, Textarea } from 'react-materialize';
 import Dictaphone from './Dictaphone.jsx';
 
 function AskPrompts({ prompts, showPrompts, hidePrompts, responses, setResponses, submitRecord }) {
@@ -59,7 +59,7 @@ function AskPrompts({ prompts, showPrompts, hidePrompts, responses, setResponses
 
       <form onSubmit={handleSubmit}>
         <label> {currentPrompt}
-          <input
+          <Textarea
             name={`question${currentQuestion}`}
             type="text"
             value={currentResponse}

@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import 'materialize-css/dist/css/materialize.min.css';
+import 'materialize-css/dist/js/materialize.min';
+import { Button } from 'react-materialize';
 import styled from 'styled-components';
 import axios from 'axios';
 import Dictaphone from './Dictaphone.jsx';
@@ -123,23 +126,35 @@ function App() {
       <SignUp display={init} showSignup={setInit} dataSend={submitSignUp} />
 
       <QuestionPrompt promptsCount={prompts.length + 1} addToPrompts={setPrompts} finalQuestion={finalQuestion} setFinalQuestion={setFinalQuestion} showQuestions={newUser} submitPrompts={submitPrompts} setFlag={setFlag} />
-      <Entry record={currentRecord} hideCurrentRecord={() => setCurrentRecord(false)} />
-      <Records records={records} showRecord={setCurrentRecord} />
-      <button onClick={() => setShowPromptModal(true)}>SHOW ME THE PROMPTS</button>
+      <Right>
+      <h3>Entry</h3>
+        <Entry record={currentRecord} hideCurrentRecord={() => setCurrentRecord(false)} />
+      </Right>
+      <Left>
+        <h3>Previous Entries</h3>
+        <Records records={records} showRecord={setCurrentRecord} />
+        <Button onClick={() => setShowPromptModal(true)}>SHOW ME THE PROMPTS</Button>
+      </Left>
 
     </Wrapper>
   )
 }
-const Title = styled.h1`
-  font-size: 1.5em;
-  text-align: center;
-  color: palevioletred;
-`;
 
 // Create a Wrapper component that'll render a <section> tag with some styles
 const Wrapper = styled.div`
+  width:100%;
+  height: 100%;
   padding: 4em;
   background: papayawhip;
+  position: absolute;
+`;
+const Left = styled.div`
+  float: left;
+  width: 50%;
+`;
+const Right = styled.div`
+  float: right;
+  width: 50%;
 `;
 
 export default App;
