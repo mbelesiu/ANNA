@@ -8,6 +8,7 @@ function AskPrompts({ prompts, showPrompts, hidePrompts, responses, setResponses
   const [currentPrompt, setCurrentPrompt] = useState();
   const [currentResponse, setCurrentResponse] = useState('')
   const [currentQuestion, setCurrentQuestion] = useState(0);
+  let kill = false
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -33,17 +34,20 @@ function AskPrompts({ prompts, showPrompts, hidePrompts, responses, setResponses
 
   return (
     <Modal
+    actions={[
+      <Button flat modal="close" node="button" waves="green">Nevermind...</Button>
+    ]}
       bottomSheet={false}
       fixedFooter={false}
       header="Please Answer the Following Prompts"
       id="Modal-0"
       open={true}
       options={{
-        dismissible: true,
+        dismissible: false,
         endingTop: '10%',
         inDuration: 250,
-        onCloseEnd: null,
-        onCloseStart: null,
+        onCloseEnd: (()=>(hidePrompts(false))),
+        onCloseStart: (()=>(kill = true)),
         onOpenEnd: null,
         onOpenStart: null,
         opacity: 0.5,
@@ -64,7 +68,7 @@ function AskPrompts({ prompts, showPrompts, hidePrompts, responses, setResponses
         </label>
         <Button>{currentQuestion !== (prompts.length - 1) ? 'Next Prompt' : 'Submit Record'}</Button>
       </form>
-      <Dictaphone currentField={setCurrentResponse} />
+      <Dictaphone currentField={setCurrentResponse} kill={!showPrompts} />
 
     </Modal>
   )

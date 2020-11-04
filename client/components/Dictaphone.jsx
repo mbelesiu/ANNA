@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 
-const Dictaphone = ({ currentField }) => {
+const Dictaphone = ({ currentField, kill }) => {
   const { transcript, resetTranscript } = useSpeechRecognition()
   const [listen, setListen] = useState([]);
   const [shouldITellThemIAmListening, setShouldITellThemIAmListening] = useState(false)
@@ -43,7 +43,9 @@ const Dictaphone = ({ currentField }) => {
     }
   }, [listen]);
 
-
+  if(kill){
+    SpeechRecognition.abortListening()
+  }
 
   return (
     <div>

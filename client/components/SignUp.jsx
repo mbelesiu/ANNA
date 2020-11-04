@@ -23,13 +23,14 @@ function SignUp({ display, showSignup, dataSend }) {
 
   return (
     <Modal
+    actions={false}
       bottomSheet={false}
       fixedFooter={false}
       header="Welcome to ANNA"
       id="Modal-0"
       open={true}
       options={{
-        dismissible: true,
+        dismissible: false,
         endingTop: '10%',
         inDuration: 250,
         onCloseEnd: null,
@@ -52,7 +53,7 @@ function SignUp({ display, showSignup, dataSend }) {
             onChange={(e) => setEmail(e.target.value)}
           />
         </label>
-        <button>Login or Signup</button>
+        <Button>Login or Signup</Button>
       </form>
     </Modal>
 
