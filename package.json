@@ -39,6 +39,7 @@
     "react-animations": "^1.0.0",
     "react-bootstrap": "^1.4.0",
     "react-dom": "^17.0.1",
+    "react-icons": "^3.11.0",
     "react-materialize": "^3.9.3",
     "react-speech-recognition": "^3.2.3",
     "style-loader": "^2.0.0",

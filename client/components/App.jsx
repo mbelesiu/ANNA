@@ -10,6 +10,7 @@ import SignUp from './SignUp.jsx';
 import Records from './Records.jsx';
 import Entry from './Entry.jsx';
 import AskPrompts from './AskPrompts.jsx';
+import NavBar from './NavBar.jsx';
 
 
 
@@ -115,6 +116,7 @@ function App() {
 
   return (
     <Wrapper>
+      <NavBar />
       <AskPrompts
         prompts={prompts}
         showPrompts={showPromptModal}
