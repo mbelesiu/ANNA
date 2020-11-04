@@ -26,7 +26,7 @@ function SignUp({ display, showSignup, dataSend }) {
     actions={false}
       bottomSheet={false}
       fixedFooter={false}
-      header="Welcome to ANNA"
+      header="Welcome to A.N.N.A."
       id="Modal-0"
       open={true}
       options={{
@@ -43,9 +43,9 @@ function SignUp({ display, showSignup, dataSend }) {
         startingTop: '4%'
       }}
     >
-      <h4>Please login with exisiting email, or sign up with new email</h4>
+      <h5>Please login with exisiting email, or sign up with new email</h5>
       <form onSubmit={handleSubmit}>
-        <label> Email
+        <label> <h5>Email</h5>
         <input
             name="email"
             type="email"

@@ -28,7 +28,7 @@ function QuestionPrompt({ promptsCount, addToPrompts, finalQuestion, setFinalQue
       <Modal>
         <ModalContent>
           <form onSubmit={(e)=>{handleSubmit(e, true, true)}}>
-            <label> What Time of day would you like to be prompted with these questions?
+            <label> <h5>Final Question, What Time of day would you like to be prompted with these questions?</h5>
           <input
                 name="EOD"
                 type="time"
@@ -48,7 +48,7 @@ function QuestionPrompt({ promptsCount, addToPrompts, finalQuestion, setFinalQue
     <Modal>
       <ModalContent>
         <form onSubmit={(e)=>{handleSubmit(e, false, false)}}>
-          <label> Question {promptsCount}
+          <label> <h5>Please Enter a Prompt for Question {promptsCount}</h5>
             <input
               name={currentQuestion}
               value={currentPrompt}
