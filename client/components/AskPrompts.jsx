@@ -34,9 +34,9 @@ function AskPrompts({ prompts, showPrompts, hidePrompts, responses, setResponses
 
   return (
     <Modal
-    actions={[
-      <Button flat modal="close" node="button" waves="green">Nevermind...</Button>
-    ]}
+      actions={[
+        <Button flat modal="close" node="button" waves="green">Nevermind...</Button>
+      ]}
       bottomSheet={false}
       fixedFooter={false}
       header="Please Answer the Following Prompts"
@@ -46,8 +46,8 @@ function AskPrompts({ prompts, showPrompts, hidePrompts, responses, setResponses
         dismissible: false,
         endingTop: '10%',
         inDuration: 250,
-        onCloseEnd: (()=>(hidePrompts(false))),
-        onCloseStart: (()=>(kill = true)),
+        onCloseEnd: (() => (hidePrompts(false))),
+        onCloseStart: (() => (kill = true)),
         onOpenEnd: null,
         onOpenStart: null,
         opacity: 0.5,
