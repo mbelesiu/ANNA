@@ -4,13 +4,18 @@
   "description": "Audio log for projects",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev-build": "webpack --watch --progress",
+    "test": "jest --coverage --env=jsdom",
+    "build": "webpack --watch --progress",
     "start": "nodemon server/index.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mbelesiu/athena.git"
+  },
+  "jest": {
+    "transform": {
+      "\\.[jt]sx?$": "babel-jest"
+    }
   },
   "keywords": [
     "Audio",
@@ -51,7 +56,11 @@
     "@babel/core": "^7.12.3",
     "@babel/preset-env": "^7.12.1",
     "@babel/preset-react": "^7.12.1",
+    "babel-jest": "^26.6.3",
     "babel-loader": "^8.1.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.5",
+    "jest": "^26.6.3",
     "nodemon": "^2.0.6",
     "webpack-cli": "^4.1.0"
   }

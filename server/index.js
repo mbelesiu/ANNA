@@ -25,8 +25,12 @@ db.query('FOR u IN Users RETURN { email: u.email, EOD: u.prompts.EOD }')
   .then(({ _result }) => {
     _result.forEach((savedUser) => {
       if (!savedUser.EOD) {
-        db.query(aqlQuery`FOR u in Users FILTER u.email == ${savedUser.email} REMOVE u IN Users`).
-          then(() => console.log('delete incomplete data'))
+        db.query(aqlQuery`FOR u in Users FILTER u.email == ${savedUser.email} REMOVE u IN Users`)
+          .then(() => {
+            db.query(aqlQuery`FOR u in Records FILTER u.email == ${savedUser.email} REMOVE u IN Records`)
+              .then(() => console.log('delete incomplete data from Records'))
+          })
+          .then(() => console.log('delete incomplete data from User'))
       } else {
         const time = savedUser.EOD.split(':');
         userTimeTable[savedUser.email] = scheduleKeeper(time, savedUser.email);
@@ -115,7 +119,7 @@ app.post('/api/records/create/:username', (req, res) => {
     .then(({ _result }) => {
       const currentEntries = _result[0].entry
       console.log(currentEntries);
-      newEntry['id'] = currentEntries.length+1;
+      newEntry['id'] = currentEntries.length + 1;
       currentEntries.push(newEntry);
       db.query(aqlQuery`FOR u IN Records FILTER u.email == ${username} UPDATE u WITH {entry: ${currentEntries}} IN Records RETURN u`)
         .then(() => res.sendStatus(200))

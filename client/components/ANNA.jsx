@@ -14,7 +14,7 @@ const Dictaphone = ({ currentField, kill }) => {
     const newKeyWords = transcript.split(" ").slice(-2)
     setListen(newKeyWords)
     if (listen.length >= 2) {
-      if (listen[0].toLowerCase() === 'hey' && listen[1].toLowerCase() === 'anna') {
+      if (listen[0].toLowerCase() === 'hey' && listen[1].toLowerCase() === 'anna' && !shouldITellThemIAmListening) {
         console.log('Hey Anna');
         setShouldITellThemIAmListening(true);
         resetTranscript();
@@ -43,13 +43,13 @@ const Dictaphone = ({ currentField, kill }) => {
     }
   }, [listen]);
 
-  if(kill){
+  if (kill) {
     SpeechRecognition.abortListening()
   }
 
   return (
     <div>
-      <p>Powered by the future</p>
+      <p>Powered by the future {shouldITellThemIAmListening ? " 🔴" : " 🔵"}</p>
     </div>
   )
 }

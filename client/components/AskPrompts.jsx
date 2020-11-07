@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import 'materialize-css/dist/css/materialize.min.css';
 import 'materialize-css/dist/js/materialize.min';
 import { Modal, Button, Textarea } from 'react-materialize';
-import Dictaphone from './Dictaphone.jsx';
+import ANNA from './ANNA.jsx';
 
 function AskPrompts({ prompts, showPrompts, hidePrompts, responses, setResponses, submitRecord }) {
   const [currentPrompt, setCurrentPrompt] = useState();
@@ -68,7 +68,7 @@ function AskPrompts({ prompts, showPrompts, hidePrompts, responses, setResponses
         </label>
         <Button>{currentQuestion !== (prompts.length - 1) ? 'Next Prompt' : 'Submit Record'}</Button>
       </form>
-      <Dictaphone currentField={setCurrentResponse} kill={!showPrompts} />
+      <ANNA currentField={setCurrentResponse} kill={!showPrompts} />
 
     </Modal>
   )
