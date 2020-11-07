@@ -16,7 +16,6 @@ Project is created with:
 * Express
 * ArangoDB
 * Materialize
-* Ament library version: 999
 	
 ## Setup
 To run this project:
