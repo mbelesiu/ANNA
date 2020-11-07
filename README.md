@@ -1,5 +1,5 @@
 
-### Anna [![mbelesiu](https://circleci.com/gh/mbelesiu/athena.svg?style=shield)](https://circleci.com/gh/mbelesiu/athena)
+## Anna               [![mbelesiu](https://circleci.com/gh/mbelesiu/athena.svg?style=shield)](https://circleci.com/gh/mbelesiu/athena)
 
 ## Table of contents
 * [General info](#general-info)
@@ -11,12 +11,18 @@ Anna is an audio log that that will prompt the user at a set time of day to ente
 	
 ## Technologies
 Project is created with:
-* Lorem version: 12.3
-* Ipsum version: 2.33
+* React
+* Node.js
+* Express
+* ArangoDB
+* Materialize
 * Ament library version: 999
 	
 ## Setup
-To run this project, install it locally using npm:
+To run this project:
+1) Start (or Install) Arangodb
+2) Update configuration files 
+3) Install it locally using npm:
 
 ```
 $ cd ../athena
