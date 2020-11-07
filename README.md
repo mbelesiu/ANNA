@@ -15,7 +15,7 @@ Project is created with:
 * Node.js
 * Express
 * ArangoDB
-* Materialize
+* Webpack
 	
 ## Setup
 To run this project:
