@@ -39,18 +39,15 @@ db.query('FOR u IN Users RETURN { email: u.email, EOD: u.prompts.EOD }')
       }
 
     });
-    //console.log(userTimeTable)
   })
   .catch((err) => console.log(err))
 
 app.post('/api/prompts/create/:username', (req, res) => {
   const username = req.params.username
   const prompts = req.body;
-  //  console.log(prompts)
   db.query(aqlQuery`FOR u IN Users FILTER u.email == ${username} UPDATE u WITH {prompts: ${prompts}} IN Users RETURN u`)
     .then(() => {
       const time = prompts.EOD.split(':')
-      //  console.log(time);
       if (userTimeTable[username]) {
         userTimeTable[username].cancel();
       }
@@ -152,21 +149,16 @@ app.post('/api/records/create/:username', (req, res) => {
 //   console.log(req.body);
 //   res.sendStatus(200);
 // })
-
 // signup/login routes - Not MVP
 //TO DO LATER
 // app.get('/signup',(req, res)=>{
 //   res.render('signup');
 // });
 // app.post('/signup',(req, res)=>{
-
 // });
-
 // // app.get('/login',(req, res)=>{
-
 // // });
 // app.post('/login',(req, res)=>{
-
 // });
 
 const PORT = 3000;
