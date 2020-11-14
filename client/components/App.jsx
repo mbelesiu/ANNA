@@ -164,13 +164,13 @@ const Right = styled.div`
 `;
 const Footer = styled.div`
 
-  position: absolute;
-  left: 0;
-  padding: 4em;
+  position: fixed;
+  float: right;
+  right: 1em;
   bottom: 0;
   width: 100%;
   background-color: papayawhip;
-  text-align: left;
+  text-align: right;
 `;
 
 export default App;
