@@ -128,14 +128,19 @@ function App() {
 
       <QuestionPrompt promptsCount={prompts.length + 1} addToPrompts={setPrompts} finalQuestion={finalQuestion} setFinalQuestion={setFinalQuestion} showQuestions={newUser} submitPrompts={submitPrompts} setFlag={setFlag} />
       <Right>
-      <h3>Entry</h3>
+        <h3>Entry</h3>
         <Entry record={currentRecord} hideCurrentRecord={() => setCurrentRecord(false)} />
       </Right>
       <Left>
         <h3>Previous Entries</h3>
-        <Records records={records} showRecord={setCurrentRecord} />
         <Button onClick={() => setShowPromptModal(true)}>SHOW ME THE PROMPTS</Button>
+        <Records records={records} showRecord={setCurrentRecord} />
+
       </Left>
+      <Footer>
+        A.N.N.A MK.1
+        By Matthew James Belesiu
+      </Footer>
 
     </Wrapper>
   )
@@ -156,6 +161,16 @@ const Left = styled.div`
 const Right = styled.div`
   float: right;
   width: 50%;
+`;
+const Footer = styled.div`
+
+  position: absolute;
+  left: 0;
+  padding: 4em;
+  bottom: 0;
+  width: 100%;
+  background-color: papayawhip;
+  text-align: left;
 `;
 
 export default App;
