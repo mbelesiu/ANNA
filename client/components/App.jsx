@@ -29,15 +29,19 @@ function App() {
   const [flag, setFlag] = useState(false);
 
   const getUserPrompts = (username) => {
-    // setPrompts([])
+    setPrompts([])
+
     axios.get(`/api/prompts/${username}`)
       .then(({ data }) => {
+        let temp = []
         data = data[0].prompts;
         for (prompt in data) {
           if (prompt !== 'EOD') {
-            setPrompts(prevPrompts => [...prevPrompts, data[prompt]]);
+            temp.push(data[prompt])
           }
         }
+        temp.reverse()
+        setPrompts(temp)
       })
       .catch((err) => (err));
   }
@@ -74,7 +78,6 @@ function App() {
       axios.post(`/api/prompts/create/${currentUser}`, data)
         .then(() => {
           setNewUser(false);
-          getUserPrompts(currentUser);
         })
         .catch((err) => console.log(err))
     }
@@ -121,6 +124,8 @@ function App() {
       <Calendar />
       <AskPrompts
         prompts={prompts}
+        getPrompts={getUserPrompts}
+        currentUser={currentUser}
         showPrompts={showPromptModal}
         hidePrompts={setShowPromptModal}
         responses={responses}
