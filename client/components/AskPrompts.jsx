@@ -31,7 +31,7 @@ function AskPrompts({ prompts, showPrompts, hidePrompts, responses, setResponses
   if (!showPrompts) {
     return null;
   }
-
+  console.log(prompts)
   return (
     <Modal
       actions={[
