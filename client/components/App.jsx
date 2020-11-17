@@ -4,8 +4,6 @@ import 'materialize-css/dist/js/materialize.min';
 import { Button } from 'react-materialize';
 import styled from 'styled-components';
 import axios from 'axios';
-import Calendar from 'react-calendar'
-import 'react-calendar/dist/Calendar.css';
 import QuestionPrompt from './QuestionPrompt.jsx';
 import SignUp from './SignUp.jsx';
 import Records from './Records.jsx';
@@ -121,7 +119,6 @@ function App() {
   return (
     <Wrapper>
       <NavBar />
-      <Calendar />
       <AskPrompts
         prompts={prompts}
         getPrompts={getUserPrompts}
