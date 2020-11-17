@@ -4,7 +4,7 @@ import 'materialize-css/dist/js/materialize.min';
 import { Modal, Button, Textarea } from 'react-materialize';
 import ANNA from './ANNA.jsx';
 
-function AskPrompts({ prompts, showPrompts, hidePrompts, responses, setResponses, submitRecord }) {
+function AskPrompts({ prompts, getPrompts, currentUser, showPrompts, hidePrompts, responses, setResponses, submitRecord }) {
   const [currentPrompt, setCurrentPrompt] = useState();
   const [currentResponse, setCurrentResponse] = useState('')
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -27,11 +27,13 @@ function AskPrompts({ prompts, showPrompts, hidePrompts, responses, setResponses
   useEffect(() => {
     setCurrentPrompt(prompts[currentQuestion]);
   })
+  useEffect(()=>{
+    getPrompts(currentUser);
+  },[showPrompts])
 
   if (!showPrompts) {
     return null;
   }
-  console.log(prompts)
   return (
     <Modal
       actions={[
