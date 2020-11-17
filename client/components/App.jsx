@@ -29,7 +29,7 @@ function App() {
   const [flag, setFlag] = useState(false);
 
   const getUserPrompts = (username) => {
-    setPrompts([])
+    // setPrompts([])
     axios.get(`/api/prompts/${username}`)
       .then(({ data }) => {
         data = data[0].prompts;
