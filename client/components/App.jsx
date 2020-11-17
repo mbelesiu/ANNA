@@ -9,6 +9,7 @@ import SignUp from './SignUp.jsx';
 import Records from './Records.jsx';
 import Entry from './Entry.jsx';
 import AskPrompts from './AskPrompts.jsx';
+import ChangePrompts from './ChangePrompts.jsx';
 import NavBar from './NavBar.jsx';
 
 
@@ -23,6 +24,7 @@ function App() {
   const [currentRecord, setCurrentRecord] = useState(false);
   const [promptTime, setPromptTime] = useState(false); //allowing user to answer prompt
   const [showPromptModal, setShowPromptModal] = useState(false); //show quetionaire
+  const [showChangePromptModal, setShowChangePromptModal] = useState(false);
   const [responses, setResponses] = useState({});
   const [flag, setFlag] = useState(false);
 
@@ -129,6 +131,13 @@ function App() {
         setResponses={setResponses}
         submitRecord={submitRecord}
       />
+      <ChangePrompts
+      prompts={prompts}
+      show={showChangePromptModal}
+      changeShow = {setShowChangePromptModal}
+      getPrompts = {getUserPrompts}
+      currentUser={currentUser}
+      />
       <SignUp display={init} showSignup={setInit} dataSend={submitSignUp} />
 
       <QuestionPrompt promptsCount={prompts.length + 1} addToPrompts={setPrompts} finalQuestion={finalQuestion} setFinalQuestion={setFinalQuestion} showQuestions={newUser} submitPrompts={submitPrompts} setFlag={setFlag} />
@@ -139,6 +148,7 @@ function App() {
       <Left>
         <h3>Previous Entries</h3>
         <Button onClick={() => setShowPromptModal(true)}>SHOW ME THE PROMPTS</Button>
+        <Button onClick={() => setShowChangePromptModal(true)}>LETS CHANGE THE PROMPTS</Button>
         <Records records={records} showRecord={setCurrentRecord} />
 
       </Left>
