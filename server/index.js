@@ -1,11 +1,13 @@
 const express = require('express');
 const session = require('express-session');
 const https = require('https')
-const db = require('../database');
+
 const bodyParser = require('body-parser');
 const path = require('path');
-const schedule = require('node-schedule');
-const mailer = require('./mailserver.js');
+const startTimeTable = require('./controllers/timetable.js')
+const db = require('../database');
+// const schedule = require('node-schedule');
+// const mailer = require('./mailserver.js');
 
 const app = express();
 const aqlQuery = require('arangojs').aqlQuery;
@@ -15,32 +17,32 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '/../public')));
 app.use(session({ secret: "Shh, its a secret!" }));
 
-const userTimeTable = {}
-const scheduleKeeper = (time, username) => schedule.scheduleJob(`${time[1]} ${time[0]} * * *`, function () {
-  console.log('The answer to life, the universe, and everything!');
-  mailer(username).catch(console.error);
-});
+const userTimeTable = startTimeTable()
+// const scheduleKeeper = (time, username) => schedule.scheduleJob(`${time[1]} ${time[0]} * * *`, function () {
+//   console.log('The answer to life, the universe, and everything!');
+//   mailer(username).catch(console.error);
+// });
 
 //initlization of timetables
 
-db.query('FOR u IN Users RETURN { email: u.email, EOD: u.prompts.EOD }')
-  .then(({ _result }) => {
-    _result.forEach((savedUser) => {
-      if (!savedUser.EOD) {
-        db.query(aqlQuery`FOR u in Users FILTER u.email == ${savedUser.email} REMOVE u IN Users`)
-          .then(() => {
-            db.query(aqlQuery`FOR u in Records FILTER u.email == ${savedUser.email} REMOVE u IN Records`)
-              .then(() => console.log('delete incomplete data from Records'))
-          })
-          .then(() => console.log('delete incomplete data from User'))
-      } else {
-        const time = savedUser.EOD.split(':');
-        userTimeTable[savedUser.email] = scheduleKeeper(time, savedUser.email);
-      }
+// db.query('FOR u IN Users RETURN { email: u.email, EOD: u.prompts.EOD }')
+//   .then(({ _result }) => {
+//     _result.forEach((savedUser) => {
+//       if (!savedUser.EOD) {
+//         db.query(aqlQuery`FOR u in Users FILTER u.email == ${savedUser.email} REMOVE u IN Users`)
+//           .then(() => {
+//             db.query(aqlQuery`FOR u in Records FILTER u.email == ${savedUser.email} REMOVE u IN Records`)
+//               .then(() => console.log('delete incomplete data from Records'))
+//           })
+//           .then(() => console.log('delete incomplete data from User'))
+//       } else {
+//         const time = savedUser.EOD.split(':');
+//         userTimeTable[savedUser.email] = scheduleKeeper(time, savedUser.email);
+//       }
 
-    });
-  })
-  .catch((err) => console.log(err))
+//     });
+//   })
+//   .catch((err) => console.log(err))
 
 app.post('/api/prompts/create/:username', (req, res) => {
   const username = req.params.username
