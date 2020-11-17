@@ -43,7 +43,7 @@ function App() {
   const getUserRecords = () => {
     axios.get(`/api/records/${currentUser}`)
       .then(({ data }) => {
-        setRecords(data[0].entry);
+        setRecords(data[0].entry.reverse());
       })
       .catch((err) => (err));
   }
