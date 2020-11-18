@@ -42,7 +42,7 @@ function App() {
             temp.push(data[prompt]);
           }
         }
-        temp.reverse()
+        //temp.reverse()
         setPrompts(temp)
       })
       .catch((err) => (err));
@@ -57,7 +57,7 @@ function App() {
       }
     })
     axios.put(`/api/prompts/update/${currentUser}`, data)
-      .then(() => getUserRecords())
+      .then(() => getUserPrompts())
       .catch((err) => console.log(err));
     setShowChangePromptModal(false)
   }
@@ -91,6 +91,7 @@ function App() {
           data[`question${i}`] = prompt
         }
       })
+      console.log(data)
       axios.post(`/api/prompts/create/${currentUser}`, data)
         .then(() => {
           setNewUser(false);

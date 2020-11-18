@@ -8,7 +8,7 @@ const promptMethods = {
     const username = req.params.username
     const prompts = req.body;
     db.query(aqlQuery`FOR u IN Users FILTER u.email == ${username} UPDATE u WITH {prompts: ${prompts}} IN Users RETURN u`)
-      .then(() => {
+      .then((u) => {
         const time = prompts.EOD.split(':')
         if (userTimeTable[username]) {
           userTimeTable[username].cancel();
@@ -37,7 +37,7 @@ const promptMethods = {
     const username = req.params.username
     const prompts = req.body;
     db.query(aqlQuery`FOR u IN Users FILTER u.email == ${username} UPDATE u WITH {prompts: ${prompts}} IN Users RETURN u`)
-      .then(() => {
+      .then((u) => {
         const time = prompts.EOD.split(':')
         if (userTimeTable[username]) {
           userTimeTable[username].cancel();
