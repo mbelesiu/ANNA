@@ -47,6 +47,20 @@ function App() {
       })
       .catch((err) => (err));
   }
+  const updatePrompts = (newPrompts) => {
+    const data = {};
+    newPrompts.forEach((prompt, i) => {
+      if (i === prompts.length - 1) {
+        data["EOD"] = prompt
+      } else {
+        data[`question${i}`] = prompt
+      }
+    })
+    axios.put(`/api/prompts/update/${currentUser}`, data)
+      .then(() => getUserRecords())
+      .catch((err) => console.log(err));
+    setShowChangePromptModal(false)
+  }
 
   const getUserRecords = () => {
     axios.get(`/api/records/${currentUser}`)
@@ -134,12 +148,13 @@ function App() {
         submitRecord={submitRecord}
       />
       <ChangePrompts
-      prompts={prompts}
-      show={showChangePromptModal}
-      changeShow = {setShowChangePromptModal}
-      getPrompts = {getUserPrompts}
-      currentUser={currentUser}
-      currentTime={time}
+        prompts={prompts}
+        show={showChangePromptModal}
+        changeShow={setShowChangePromptModal}
+        getPrompts={getUserPrompts}
+        currentUser={currentUser}
+        currentTime={time}
+        updatePrompts={updatePrompts}
       />
       <SignUp display={init} showSignup={setInit} dataSend={submitSignUp} />
 

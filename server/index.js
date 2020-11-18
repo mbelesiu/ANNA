@@ -29,7 +29,7 @@ app.get('/api/login/:username', login);
 /*Prompts Routes */
 app.get('/api/prompts/:username', getPrompts);
 app.post('/api/prompts/create/:username', createPrompts);
-app.put('/api/prompts/create/:username', updatePrompt)
+app.put('/api/prompts/update/:username', updatePrompt)
 
 
 /**Records Routes **/

@@ -4,15 +4,18 @@ import 'materialize-css/dist/js/materialize.min';
 import { Modal, Button, Textarea } from 'react-materialize';
 import styled from 'styled-components';
 
-function ChangePrompts({ prompts, show, changeShow, getPrompts, currentUser, currentTime }) {
+function ChangePrompts({ prompts, show, changeShow, getPrompts, currentUser, currentTime, updatePrompts }) {
   const [promptList, setPromptList] = useState();
-  const [time, setTime] = useState();
+  const [time, setTime] = useState(currentTime);
   const [toggle, setToggle] = useState(true); // for some reason, the state will not rerender for a modifcation of prompts, so I had to add an extra something
 
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    changeShow(false);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    let tempList = promptList;
+    tempList.push(time);
+    setPromptList(tempList);
+    updatePrompts(promptList)
   }
 
   const handleChange = (value, index) => {
@@ -34,6 +37,7 @@ function ChangePrompts({ prompts, show, changeShow, getPrompts, currentUser, cur
 
   useEffect(() => {
     setPromptList(prompts);
+    setTime(currentTime)
   }, [prompts])
 
 
