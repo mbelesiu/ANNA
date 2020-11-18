@@ -27,17 +27,19 @@ function App() {
   const [showChangePromptModal, setShowChangePromptModal] = useState(false);
   const [responses, setResponses] = useState({});
   const [flag, setFlag] = useState(false);
+  const [time, setTime] = useState();
 
   const getUserPrompts = (username) => {
     setPrompts([])
-
     axios.get(`/api/prompts/${username}`)
       .then(({ data }) => {
-        let temp = []
+        let temp = [];
         data = data[0].prompts;
         for (prompt in data) {
-          if (prompt !== 'EOD') {
-            temp.push(data[prompt])
+          if (prompt === 'EOD') {
+            setTime(data[prompt]);
+          } else {
+            temp.push(data[prompt]);
           }
         }
         temp.reverse()
@@ -137,6 +139,7 @@ function App() {
       changeShow = {setShowChangePromptModal}
       getPrompts = {getUserPrompts}
       currentUser={currentUser}
+      currentTime={time}
       />
       <SignUp display={init} showSignup={setInit} dataSend={submitSignUp} />
 
@@ -149,7 +152,7 @@ function App() {
         <h3>Previous Entries</h3>
         <Button onClick={() => setShowPromptModal(true)}>ANSWER TODAY'S PROMPTS</Button>
         <Button onClick={() => setShowChangePromptModal(true)}>UPDATE PROMPTS</Button>
-        <Button onClick={() => console.log("Todo")}>UPDATE PROMPTS</Button>
+        <Button onClick={() => console.log("Todo")}>ADD NEW PROJECT</Button>
         <Records records={records} showRecord={setCurrentRecord} />
 
       </Left>

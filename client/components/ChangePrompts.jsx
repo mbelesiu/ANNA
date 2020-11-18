@@ -4,10 +4,11 @@ import 'materialize-css/dist/js/materialize.min';
 import { Modal, Button, Textarea } from 'react-materialize';
 import styled from 'styled-components';
 
-function ChangePrompts({ prompts, show, changeShow, getPrompts, currentUser}) {
+function ChangePrompts({ prompts, show, changeShow, getPrompts, currentUser, currentTime }) {
   const [promptList, setPromptList] = useState();
+  const [time, setTime] = useState();
   const [toggle, setToggle] = useState(true); // for some reason, the state will not rerender for a modifcation of prompts, so I had to add an extra something
-  const [time, setTime] = useState('');
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -17,10 +18,8 @@ function ChangePrompts({ prompts, show, changeShow, getPrompts, currentUser}) {
   const handleChange = (value, index) => {
     let tempList = promptList;
     tempList[index] = value;
-    console.log(tempList[index])
     setPromptList(tempList);
     setToggle(!toggle);
-    // console.log(promptList)
   }
   const addPrompt = () => {
     let tempList = promptList;
@@ -29,15 +28,13 @@ function ChangePrompts({ prompts, show, changeShow, getPrompts, currentUser}) {
     setToggle(!toggle);
   }
 
-  useEffect(()=>{
-    // console.log('I should only happen when the modal pops up')
+  useEffect(() => {
     getPrompts(currentUser);
-  },[show])
+  }, [show])
 
   useEffect(() => {
-    // console.log('im setting propts when promts are changed')
     setPromptList(prompts);
-  },[prompts])
+  }, [prompts])
 
 
   if (!show) {
@@ -68,22 +65,29 @@ function ChangePrompts({ prompts, show, changeShow, getPrompts, currentUser}) {
       }}
     >
 
-        <form onSubmit={(e) => { handleSubmit(e) }}>
-          {console.log(promptList)}
-          {promptList.map((prompt, i) =>
-            <label> <h6>Current Prompt {i + 1}</h6>
-              <Textarea
-                name={prompt}
-                type="text"
-                value={prompt}
-                onChange={(e) => handleChange(e.target.value, i)}
-              />
-            </label>
-          )}
+      <form onSubmit={(e) => { handleSubmit(e) }}>
+        {promptList.map((prompt, i) =>
+          <label> <h6>Current Prompt {i + 1}</h6>
+            <Textarea
+              name={prompt}
+              type="text"
+              value={prompt}
+              onChange={(e) => handleChange(e.target.value, i)}
+            />
+          </label>
+        )}
+        <label> <h6>Change Time</h6>
+          <input
+            name='EOD'
+            type="time"
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
+          />
+        </label>
 
-          <Button>Submit Change</Button>
-        </form>
-        <Button onClick={addPrompt}>Add a Prompt</Button>
+        <Button>Submit Change</Button>
+      </form>
+      <Button onClick={addPrompt}>Add a Prompt</Button>
 
     </Modal>
 

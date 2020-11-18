@@ -4,11 +4,11 @@ const session = require('express-session');
 
 const bodyParser = require('body-parser');
 const path = require('path');
-const startTimeTable = require('./controllers/timetable.js')
+let { userTimeTable, startTimeTable } = require('./controllers/timetable.js')
 const { login } = require('./controllers/login.js')
-const { createPrompts, getPrompts } = require('./controllers/prompts.js')
- const {getRecords, createRecords} = require('./controllers/records.js')
-// const db = require('../database');
+const { createPrompts, getPrompts, updatePrompt } = require('./controllers/prompts.js')
+const { getRecords, createRecords } = require('./controllers/records.js')
+
 
 const app = express();
 const aqlQuery = require('arangojs').aqlQuery;
@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '/../public')));
 app.use(session({ secret: "Shh, its a secret!" }));
 
-const userTimeTable = startTimeTable()
+userTimeTable = startTimeTable()
 
 
 
@@ -29,6 +29,7 @@ app.get('/api/login/:username', login);
 /*Prompts Routes */
 app.get('/api/prompts/:username', getPrompts);
 app.post('/api/prompts/create/:username', createPrompts);
+app.put('/api/prompts/create/:username', updatePrompt)
 
 
 /**Records Routes **/
