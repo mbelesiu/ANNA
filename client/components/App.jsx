@@ -147,8 +147,9 @@ function App() {
       </Right>
       <Left>
         <h3>Previous Entries</h3>
-        <Button onClick={() => setShowPromptModal(true)}>SHOW ME THE PROMPTS</Button>
-        <Button onClick={() => setShowChangePromptModal(true)}>LETS CHANGE THE PROMPTS</Button>
+        <Button onClick={() => setShowPromptModal(true)}>ANSWER TODAY'S PROMPTS</Button>
+        <Button onClick={() => setShowChangePromptModal(true)}>UPDATE PROMPTS</Button>
+        <Button onClick={() => console.log("Todo")}>UPDATE PROMPTS</Button>
         <Records records={records} showRecord={setCurrentRecord} />
 
       </Left>
