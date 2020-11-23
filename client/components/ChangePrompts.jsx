@@ -24,6 +24,7 @@ function ChangePrompts({ prompts, show, changeShow, getPrompts, currentUser, cur
     setPromptList(tempList);
     setToggle(!toggle);
   }
+
   const addPrompt = () => {
     let tempList = promptList;
     tempList.push('');
