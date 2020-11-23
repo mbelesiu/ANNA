@@ -9,6 +9,7 @@ import SignUp from './SignUp.jsx';
 import Records from './Records.jsx';
 import Entry from './Entry.jsx';
 import AskPrompts from './AskPrompts.jsx';
+import ChangePrompts from './ChangePrompts.jsx';
 import NavBar from './NavBar.jsx';
 
 
@@ -23,19 +24,22 @@ function App() {
   const [currentRecord, setCurrentRecord] = useState(false);
   const [promptTime, setPromptTime] = useState(false); //allowing user to answer prompt
   const [showPromptModal, setShowPromptModal] = useState(false); //show quetionaire
+  const [showChangePromptModal, setShowChangePromptModal] = useState(false);
   const [responses, setResponses] = useState({});
   const [flag, setFlag] = useState(false);
+  const [time, setTime] = useState();
 
   const getUserPrompts = (username) => {
     setPrompts([])
-
     axios.get(`/api/prompts/${username}`)
       .then(({ data }) => {
-        let temp = []
+        let temp = [];
         data = data[0].prompts;
         for (prompt in data) {
-          if (prompt !== 'EOD') {
-            temp.push(data[prompt])
+          if (prompt === 'EOD') {
+            setTime(data[prompt]);
+          } else {
+            temp.push(data[prompt]);
           }
         }
         temp.reverse()
@@ -43,11 +47,25 @@ function App() {
       })
       .catch((err) => (err));
   }
+  const updatePrompts = (newPrompts) => {
+    const data = {};
+    newPrompts.forEach((prompt, i) => {
+      if (i === prompts.length - 1) {
+        data["EOD"] = prompt
+      } else {
+        data[`question${i}`] = prompt
+      }
+    })
+    axios.put(`/api/prompts/update/${currentUser}`, data)
+      .then(() => getUserPrompts())
+      .catch((err) => console.log(err));
+    setShowChangePromptModal(false)
+  }
 
   const getUserRecords = () => {
     axios.get(`/api/records/${currentUser}`)
       .then(({ data }) => {
-        setRecords(data[0].entry.reverse());
+        setRecords(data[0].entry);
       })
       .catch((err) => (err));
   }
@@ -129,6 +147,15 @@ function App() {
         setResponses={setResponses}
         submitRecord={submitRecord}
       />
+      <ChangePrompts
+        prompts={prompts}
+        show={showChangePromptModal}
+        changeShow={setShowChangePromptModal}
+        getPrompts={getUserPrompts}
+        currentUser={currentUser}
+        currentTime={time}
+        updatePrompts={updatePrompts}
+      />
       <SignUp display={init} showSignup={setInit} dataSend={submitSignUp} />
 
       <QuestionPrompt promptsCount={prompts.length + 1} addToPrompts={setPrompts} finalQuestion={finalQuestion} setFinalQuestion={setFinalQuestion} showQuestions={newUser} submitPrompts={submitPrompts} setFlag={setFlag} />
@@ -138,7 +165,9 @@ function App() {
       </Right>
       <Left>
         <h3>Previous Entries</h3>
-        <Button onClick={() => setShowPromptModal(true)}>SHOW ME THE PROMPTS</Button>
+        <Button onClick={() => setShowPromptModal(true)}>ANSWER TODAY'S PROMPTS</Button>
+        <Button onClick={() => setShowChangePromptModal(true)}>UPDATE PROMPTS</Button>
+        <Button onClick={() => console.log("Todo")}>ADD NEW PROJECT</Button>
         <Records records={records} showRecord={setCurrentRecord} />
 
       </Left>
