@@ -1,8 +1,9 @@
 
-## Anna               [![mbelesiu](https://circleci.com/gh/mbelesiu/athena.svg?style=shield)](https://circleci.com/gh/mbelesiu/athena)
 
 <img src="https://github.com/mbelesiu/athena/blob/main/annalogo.jpg" width="278 px" height="273.5 px">
+[![mbelesiu](https://circleci.com/gh/mbelesiu/athena.svg?style=shield)](https://circleci.com/gh/mbelesiu/athena)
 
+## A.N.N.A.               
 ## Table of contents
 * [General info](#general-info)
 * [Technologies](#technologies)
