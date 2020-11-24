@@ -1,8 +1,5 @@
-<p text-align="right">
-	
 [![mbelesiu](https://circleci.com/gh/mbelesiu/athena.svg?style=shield)](https://circleci.com/gh/mbelesiu/athena)
 
-</p>
 <p align="center">
 <img src="https://github.com/mbelesiu/athena/blob/main/annalogo.jpg" width="278 px" height="273.5 px">
 </p>
