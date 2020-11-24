@@ -2,6 +2,7 @@
 ## Anna               [![mbelesiu](https://circleci.com/gh/mbelesiu/athena.svg?style=shield)](https://circleci.com/gh/mbelesiu/athena)
 
 ![Image](https://github.com/mbelesiu/athena/blob/main/annalogo.jpg?raw=true)
+<img src="https://github.com/mbelesiu/athena/blob/main/annalogo.jpg" width="48">
 
 ## Table of contents
 * [General info](#general-info)
