@@ -13,13 +13,6 @@ const loginMethods =
         db.query(aqlQuery`INSERT { email: ${username}, prompts: {} } INTO Users`)
           .then(() => db.query(aqlQuery`INSERT { email: ${username}, entry: [] } INTO Records`))
           .then(() => {
-            if (req.session.page_views) {
-              req.session.page_views++;
-              console.log("You visited this page " + req.session.page_views + " times");
-            } else {
-              req.session.page_views = 1;
-              console.log("Welcome to this page for the first time!");
-            }
              res.sendStatus(200)
           })
           .catch((err) => {
@@ -27,13 +20,6 @@ const loginMethods =
             res.sendStatus(404)
           })
       } else {
-        if (req.session.page_views) {
-          req.session.page_views++;
-          console.log("You visited this page " + req.session.page_views + " times");
-        } else {
-          req.session.page_views = 1;
-          console.log("Welcome to this page for the first time!");
-        }
         res.send(_result)
       }
 
