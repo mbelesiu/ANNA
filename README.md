@@ -1,4 +1,4 @@
-<p align="left">
+<p text-align="right">
 	
 [![mbelesiu](https://circleci.com/gh/mbelesiu/athena.svg?style=shield)](https://circleci.com/gh/mbelesiu/athena)
 
