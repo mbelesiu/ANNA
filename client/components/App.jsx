@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import 'materialize-css/dist/css/materialize.min.css';
 import 'materialize-css/dist/js/materialize.min';
 import { Button } from 'react-materialize';
+import { useAuth0 } from "@auth0/auth0-react";
 import styled from 'styled-components';
 import axios from 'axios';
 import QuestionPrompt from './QuestionPrompt.jsx';
@@ -11,6 +12,9 @@ import Entry from './Entry.jsx';
 import AskPrompts from './AskPrompts.jsx';
 import ChangePrompts from './ChangePrompts.jsx';
 import NavBar from './NavBar.jsx';
+import LoginButton from './LoginButton.jsx';
+import LogoutButton from './LogoutButton.jsx';
+import Profile from './Profile.jsx'
 
 
 
@@ -19,7 +23,7 @@ function App() {
   const [newUser, setNewUser] = useState(false);
   const [prompts, setPrompts] = useState([]);
   const [finalQuestion, setFinalQuestion] = useState(false);
-  const [currentUser, setCurrentUser] = useState();
+  const [currentUser, setCurrentUser] = useState(null);
   const [records, setRecords] = useState({});
   const [currentRecord, setCurrentRecord] = useState(false);
   const [promptTime, setPromptTime] = useState(false); //allowing user to answer prompt
@@ -100,26 +104,37 @@ function App() {
   };
 
 
-  const submitSignUp = (user) => {
-
-    axios.get(`/api/login/${user}`)
-      .then(({ data }) => {
-        setCurrentUser(user);
-        if (data === "OK") {
-          setNewUser(true)
-        } else {
-          setNewUser(false);
-          data = data[0].prompts;
-          for (prompt in data) {
-            if (prompt !== 'EOD') {
-              setPrompts(prevPrompts => [...prevPrompts, data[prompt]]);
+  const submitSignUp = () => {
+    if (currentUser) {
+      axios.get(`/api/login/${currentUser}`)
+        .then(({ data }) => {
+          // setCurrentUser(user);
+          if (data === "OK") {
+            setNewUser(true)
+          } else {
+            setNewUser(false);
+            data = data[0].prompts;
+            for (prompt in data) {
+              if (prompt !== 'EOD') {
+                setPrompts(prevPrompts => [...prevPrompts, data[prompt]]);
+              }
             }
           }
-        }
-      })
+        })
+        .catch((err) => console.log(err))
+
+    }
+  }
+
+  const sendLogout = () => {
+    axios.get(`/logout`)
+      .then((response) => console.log(response))
       .catch((err) => console.log(err))
-
-
+  }
+  const sendLogin = () => {
+    axios.get(`/login`)
+      .then((response) => console.log(response))
+      .catch((err) => console.log(err))
   }
 
   useEffect(() => {
@@ -131,11 +146,12 @@ function App() {
   }, [prompts]);
 
   useEffect(() => {
-    getUserRecords()
+    submitSignUp()
   }, [currentUser])
 
   return (
     <Wrapper>
+      <Profile setCurrentUser={setCurrentUser} />
       <NavBar />
       <AskPrompts
         prompts={prompts}
@@ -156,7 +172,7 @@ function App() {
         currentTime={time}
         updatePrompts={updatePrompts}
       />
-      <SignUp display={init} showSignup={setInit} dataSend={submitSignUp} />
+      {/* <SignUp display={init} showSignup={setInit} dataSend={submitSignUp} /> */}
 
       <QuestionPrompt promptsCount={prompts.length + 1} addToPrompts={setPrompts} finalQuestion={finalQuestion} setFinalQuestion={setFinalQuestion} showQuestions={newUser} submitPrompts={submitPrompts} setFlag={setFlag} />
       <Right>
@@ -167,7 +183,6 @@ function App() {
         <h3>Previous Entries</h3>
         <Button onClick={() => setShowPromptModal(true)}>ANSWER TODAY'S PROMPTS</Button>
         <Button onClick={() => setShowChangePromptModal(true)}>UPDATE PROMPTS</Button>
-        <Button onClick={() => console.log("Todo")}>ADD NEW PROJECT</Button>
         <Records records={records} showRecord={setCurrentRecord} />
 
       </Left>
@@ -184,7 +199,7 @@ function App() {
 const Wrapper = styled.div`
   width:100%;
   height: 100%;
-  padding: 4em;
+  padding: 1.5em;
   background: papayawhip;
   position: absolute;
 `;

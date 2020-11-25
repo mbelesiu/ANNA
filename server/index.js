@@ -1,14 +1,18 @@
+// const dotenv = require('dotenv');
 const express = require('express');
-const session = require('express-session');
-// const https = require('https')
-
+// const { auth } = require('express-openid-connect');
+// const { requiresAuth } = require('express-openid-connect');
+// const configAuthO = require('./configs/configAuthO.js')
 const bodyParser = require('body-parser');
 const path = require('path');
-let { userTimeTable, startTimeTable } = require('./controllers/timetable.js')
-const { login } = require('./controllers/login.js')
-const { createPrompts, getPrompts, updatePrompt } = require('./controllers/prompts.js')
-const { getRecords, createRecords } = require('./controllers/records.js')
 
+let { userTimeTable, startTimeTable } = require('./routes/timetable.js');
+const { login } = require('./routes/login.js');
+const { createPrompts, getPrompts, updatePrompt } = require('./routes/prompts.js');
+const { getRecords, createRecords } = require('./routes/records.js');
+
+
+// dotenv.load();
 
 const app = express();
 const aqlQuery = require('arangojs').aqlQuery;
@@ -16,12 +20,27 @@ const aqlQuery = require('arangojs').aqlQuery;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '/../public')));
-app.use(session({ secret: "Shh, its a secret!" }));
+// app.use(auth(configAuthO));
+// Middleware to make the `user` object available for all views
+// app.use(function (req, res, next) {
+//   res.locals.user = req.oidc.user;
+//   // console.log(res.locals.user)
+//   next();
+// });
+
 
 userTimeTable = startTimeTable()
 
+// req.isAuthenticated is provided from the auth router
+// app.get('/', (req, res) => {
+//   console.log('yo2')
+//   res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
+// });
 
-
+// app.get('/profile', requiresAuth(), (req, res) => {
+//   // console.log('yo3')
+//   res.send(JSON.stringify(req.oidc.user));
+// });
 
 //a not so great login, but suitable for MVP
 app.get('/api/login/:username', login);
@@ -44,18 +63,3 @@ app.listen(PORT, () => {
 });
 
 
-// app.post('/api/login/create', (req, res) => {
-//   console.log(req.body);
-//   res.sendStatus(200);
-// })
-// signup/login routes - Not MVP
-//TO DO LATER
-// app.get('/signup',(req, res)=>{
-//   res.render('signup');
-// });
-// app.post('/signup',(req, res)=>{
-// });
-// // app.get('/login',(req, res)=>{
-// // });
-// app.post('/login',(req, res)=>{
-// });
