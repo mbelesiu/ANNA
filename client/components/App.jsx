@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import 'materialize-css/dist/css/materialize.min.css';
 import 'materialize-css/dist/js/materialize.min';
 import { Button } from 'react-materialize';
+import { useAuth0 } from "@auth0/auth0-react";
 import styled from 'styled-components';
 import axios from 'axios';
 import QuestionPrompt from './QuestionPrompt.jsx';
@@ -150,7 +151,7 @@ function App() {
 
   return (
     <Wrapper>
-      <Profile />
+      <Profile setCurrentUser={setCurrentUser} />
       <NavBar />
       <AskPrompts
         prompts={prompts}
@@ -171,7 +172,7 @@ function App() {
         currentTime={time}
         updatePrompts={updatePrompts}
       />
-      <SignUp display={init} showSignup={setInit} dataSend={submitSignUp} />
+      {/* <SignUp display={init} showSignup={setInit} dataSend={submitSignUp} /> */}
 
       <QuestionPrompt promptsCount={prompts.length + 1} addToPrompts={setPrompts} finalQuestion={finalQuestion} setFinalQuestion={setFinalQuestion} showQuestions={newUser} submitPrompts={submitPrompts} setFlag={setFlag} />
       <Right>

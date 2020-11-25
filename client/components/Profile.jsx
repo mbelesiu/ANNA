@@ -2,7 +2,7 @@ import React from "react";
 import styled from 'styled-components';
 import { useAuth0 } from "@auth0/auth0-react";
 
-const Profile = () => {
+const Profile = ({ setCurrentUser }) => {
   const { user, isAuthenticated, isLoading } = useAuth0();
   // console.log(user)
 
@@ -13,6 +13,8 @@ const Profile = () => {
   if (!user) {
     return <Wrapper><h5>Not Sign In </h5></Wrapper>
   }
+
+  setCurrentUser(user.name)
 
   return (
     isAuthenticated && (
