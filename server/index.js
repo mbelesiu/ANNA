@@ -1,8 +1,8 @@
 // const dotenv = require('dotenv');
 const express = require('express');
-const { auth } = require('express-openid-connect');
-const { requiresAuth } = require('express-openid-connect');
-const configAuthO = require('./configs/configAuthO.js')
+// const { auth } = require('express-openid-connect');
+// const { requiresAuth } = require('express-openid-connect');
+// const configAuthO = require('./configs/configAuthO.js')
 const bodyParser = require('body-parser');
 const path = require('path');
 
@@ -20,13 +20,13 @@ const aqlQuery = require('arangojs').aqlQuery;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '/../public')));
-app.use(auth(configAuthO));
+// app.use(auth(configAuthO));
 // Middleware to make the `user` object available for all views
-app.use(function (req, res, next) {
-  res.locals.user = req.oidc.user;
-  console.log(res.locals.user)
-  next();
-});
+// app.use(function (req, res, next) {
+//   res.locals.user = req.oidc.user;
+//   // console.log(res.locals.user)
+//   next();
+// });
 
 
 userTimeTable = startTimeTable()
@@ -37,10 +37,10 @@ userTimeTable = startTimeTable()
 //   res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
 // });
 
-app.get('/profile', requiresAuth(), (req, res) => {
-  console.log('yo3')
-  res.send(JSON.stringify(req.oidc.user));
-});
+// app.get('/profile', requiresAuth(), (req, res) => {
+//   // console.log('yo3')
+//   res.send(JSON.stringify(req.oidc.user));
+// });
 
 //a not so great login, but suitable for MVP
 app.get('/api/login/:username', login);

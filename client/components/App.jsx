@@ -11,6 +11,8 @@ import Entry from './Entry.jsx';
 import AskPrompts from './AskPrompts.jsx';
 import ChangePrompts from './ChangePrompts.jsx';
 import NavBar from './NavBar.jsx';
+import LoginButton from './LoginButton.jsx';
+import LogoutButton from './LogoutButton.jsx';
 
 
 
@@ -123,12 +125,12 @@ function App() {
   }
 
   const sendLogout = () => {
-    axios.get(`/api/logout`)
+    axios.get(`/logout`)
       .then((response) => console.log(response))
       .catch((err) => console.log(err))
   }
-  const getUserInfo = () => {
-    axios.get(`/profile`)
+  const sendLogin = () => {
+    axios.get(`/login`)
       .then((response) => console.log(response))
       .catch((err) => console.log(err))
   }
@@ -178,8 +180,8 @@ function App() {
         <h3>Previous Entries</h3>
         <Button onClick={() => setShowPromptModal(true)}>ANSWER TODAY'S PROMPTS</Button>
         <Button onClick={() => setShowChangePromptModal(true)}>UPDATE PROMPTS</Button>
-        <Button onClick={() => getUserInfo()}>Get User Info</Button>
-        <Button onClick={() => sendLogout()}>Logout</Button>
+        <LoginButton />
+        <LogoutButton />
         <Records records={records} showRecord={setCurrentRecord} />
 
       </Left>

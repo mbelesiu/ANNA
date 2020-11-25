@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/mbelesiu/athena#readme",
   "dependencies": {
+    "@auth0/auth0-react": "^1.2.0",
     "@babel/polyfill": "^7.12.1",
     "animate.css": "^4.1.1",
     "arangojs": "^5.8.0",
