@@ -13,6 +13,7 @@ import ChangePrompts from './ChangePrompts.jsx';
 import NavBar from './NavBar.jsx';
 import LoginButton from './LoginButton.jsx';
 import LogoutButton from './LogoutButton.jsx';
+import Profile from './Profile.jsx'
 
 
 
@@ -149,6 +150,7 @@ function App() {
 
   return (
     <Wrapper>
+      <Profile />
       <NavBar />
       <AskPrompts
         prompts={prompts}
@@ -198,7 +200,7 @@ function App() {
 const Wrapper = styled.div`
   width:100%;
   height: 100%;
-  padding: 4em;
+  padding: 1.5em;
   background: papayawhip;
   position: absolute;
 `;
