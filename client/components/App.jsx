@@ -122,6 +122,17 @@ function App() {
 
   }
 
+  const sendLogout = () => {
+    axios.get(`/api/logout`)
+      .then((response) => console.log(response))
+      .catch((err) => console.log(err))
+  }
+  const getUserInfo = () => {
+    axios.get(`/profile`)
+      .then((response) => console.log(response))
+      .catch((err) => console.log(err))
+  }
+
   useEffect(() => {
     if (flag) {
       submitPrompts()
@@ -167,7 +178,8 @@ function App() {
         <h3>Previous Entries</h3>
         <Button onClick={() => setShowPromptModal(true)}>ANSWER TODAY'S PROMPTS</Button>
         <Button onClick={() => setShowChangePromptModal(true)}>UPDATE PROMPTS</Button>
-        <Button onClick={() => console.log("Todo")}>ADD NEW PROJECT</Button>
+        <Button onClick={() => getUserInfo()}>Get User Info</Button>
+        <Button onClick={() => sendLogout()}>Logout</Button>
         <Records records={records} showRecord={setCurrentRecord} />
 
       </Left>

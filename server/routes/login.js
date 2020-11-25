@@ -1,7 +1,5 @@
 const db = require('../../database');
 const aqlQuery = require('arangojs').aqlQuery;
-const session = require('express-session');
-const https = require('https')
 
 const loginMethods =
 {

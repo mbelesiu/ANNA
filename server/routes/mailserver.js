@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer");
-const { email, password } = require("./config.js")
+const { email, password } = require("../configs/configMail.js")
 
 // async..await is not allowed in global scope, must use a wrapper
 const mailer = async (recipient) => {
