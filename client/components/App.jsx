@@ -23,7 +23,7 @@ function App() {
   const [newUser, setNewUser] = useState(false);
   const [prompts, setPrompts] = useState([]);
   const [finalQuestion, setFinalQuestion] = useState(false);
-  const [currentUser, setCurrentUser] = useState();
+  const [currentUser, setCurrentUser] = useState(null);
   const [records, setRecords] = useState({});
   const [currentRecord, setCurrentRecord] = useState(false);
   const [promptTime, setPromptTime] = useState(false); //allowing user to answer prompt
@@ -104,26 +104,26 @@ function App() {
   };
 
 
-  const submitSignUp = (user) => {
-
-    axios.get(`/api/login/${user}`)
-      .then(({ data }) => {
-        setCurrentUser(user);
-        if (data === "OK") {
-          setNewUser(true)
-        } else {
-          setNewUser(false);
-          data = data[0].prompts;
-          for (prompt in data) {
-            if (prompt !== 'EOD') {
-              setPrompts(prevPrompts => [...prevPrompts, data[prompt]]);
+  const submitSignUp = () => {
+    if (currentUser) {
+      axios.get(`/api/login/${currentUser}`)
+        .then(({ data }) => {
+          // setCurrentUser(user);
+          if (data === "OK") {
+            setNewUser(true)
+          } else {
+            setNewUser(false);
+            data = data[0].prompts;
+            for (prompt in data) {
+              if (prompt !== 'EOD') {
+                setPrompts(prevPrompts => [...prevPrompts, data[prompt]]);
+              }
             }
           }
-        }
-      })
-      .catch((err) => console.log(err))
+        })
+        .catch((err) => console.log(err))
 
-
+    }
   }
 
   const sendLogout = () => {
@@ -146,7 +146,7 @@ function App() {
   }, [prompts]);
 
   useEffect(() => {
-    getUserRecords()
+    submitSignUp()
   }, [currentUser])
 
   return (
@@ -183,8 +183,6 @@ function App() {
         <h3>Previous Entries</h3>
         <Button onClick={() => setShowPromptModal(true)}>ANSWER TODAY'S PROMPTS</Button>
         <Button onClick={() => setShowChangePromptModal(true)}>UPDATE PROMPTS</Button>
-        <LoginButton />
-        <LogoutButton />
         <Records records={records} showRecord={setCurrentRecord} />
 
       </Left>
