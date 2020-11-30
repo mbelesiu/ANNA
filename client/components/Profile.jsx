@@ -4,7 +4,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import LoginButton from './LoginButton.jsx';
 import LogoutButton from './LogoutButton.jsx';
 
-const Profile = ({ setCurrentUser }) => {
+const Profile = ({ setCurrentUser, getUserRecords }) => {
   const { user, isAuthenticated, isLoading } = useAuth0();
   // console.log(user)
 
@@ -21,7 +21,8 @@ const Profile = ({ setCurrentUser }) => {
     </Wrapper>
   }
 
-  setCurrentUser(user.name)
+  setCurrentUser(user.name);
+  getUserRecords();
 
   return (
     isAuthenticated && (

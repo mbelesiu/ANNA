@@ -108,7 +108,7 @@ function App() {
     if (currentUser) {
       axios.get(`/api/login/${currentUser}`)
         .then(({ data }) => {
-          // setCurrentUser(user);
+           setCurrentUser(user);
           if (data === "OK") {
             setNewUser(true)
           } else {
@@ -151,7 +151,7 @@ function App() {
 
   return (
     <Wrapper>
-      <Profile setCurrentUser={setCurrentUser} />
+      <Profile setCurrentUser={setCurrentUser} getUserRecords={getUserRecords} />
       <NavBar />
       <AskPrompts
         prompts={prompts}

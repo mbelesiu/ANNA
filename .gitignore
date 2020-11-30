@@ -104,5 +104,4 @@ dist
 .tern-port
 
 configMail.js
-configAuthO.js
-.env
+config.js
