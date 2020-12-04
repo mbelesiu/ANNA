@@ -15,6 +15,8 @@ import NavBar from './NavBar.jsx';
 import LoginButton from './LoginButton.jsx';
 import LogoutButton from './LogoutButton.jsx';
 import Profile from './Profile.jsx'
+import MyCalendar from './MyCalendar.jsx';
+
 
 
 
@@ -183,6 +185,7 @@ function App() {
         <h3>Previous Entries</h3>
         <Button onClick={() => setShowPromptModal(true)}>ANSWER TODAY'S PROMPTS</Button>
         <Button onClick={() => setShowChangePromptModal(true)}>UPDATE PROMPTS</Button>
+        <MyCalendar />
         <Records records={records} showRecord={setCurrentRecord} />
 
       </Left>

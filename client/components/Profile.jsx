@@ -6,7 +6,6 @@ import LogoutButton from './LogoutButton.jsx';
 
 const Profile = ({ setCurrentUser, getUserRecords }) => {
   const { user, isAuthenticated, isLoading } = useAuth0();
-  // console.log(user)
 
   if (isLoading) {
     return <Wrapper>Loading ...
