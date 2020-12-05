@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import 'materialize-css/dist/css/materialize.min.css';
 import 'materialize-css/dist/js/materialize.min';
 import EntryTitle from './EntryTitle.jsx'
@@ -11,6 +11,7 @@ function Records({ records, showRecord }) {
         <h3>No records have been created at this time</h3>
       </div>)
   }
+   console.log('records');
   return (
     <div>
       {records.map((record) => <EntryTitle key={record.id} record={record} showRecord={showRecord} />)}

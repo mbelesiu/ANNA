@@ -1,10 +1,10 @@
-import React from "react";
+import React, {useEffect} from "react";
 import styled from 'styled-components';
 import { useAuth0 } from "@auth0/auth0-react";
 import LoginButton from './LoginButton.jsx';
 import LogoutButton from './LogoutButton.jsx';
 
-const Profile = ({ setCurrentUser, getUserRecords }) => {
+const Profile = ({ setCurrentUser, getUserRecords, currentUser }) => {
   const { user, isAuthenticated, isLoading } = useAuth0();
 
   if (isLoading) {
@@ -19,9 +19,13 @@ const Profile = ({ setCurrentUser, getUserRecords }) => {
       <LoginButton />
     </Wrapper>
   }
+  useEffect(()=>{
+    if(user){
+      setCurrentUser(user.name);
+      getUserRecords();
+    }
+  },[currentUser])
 
-  setCurrentUser(user.name);
-  getUserRecords();
 
   return (
     isAuthenticated && (
