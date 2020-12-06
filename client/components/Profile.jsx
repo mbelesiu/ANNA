@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import styled from 'styled-components';
 import { useAuth0 } from "@auth0/auth0-react";
 import LoginButton from './LoginButton.jsx';
@@ -8,29 +8,30 @@ const Profile = ({ setCurrentUser, getUserRecords, currentUser }) => {
   const { user, isAuthenticated, isLoading } = useAuth0();
 
   if (isLoading) {
-    return <Wrapper>Loading ...
+    return <Wrapper>
+      <Status>Loading ...</Status>
       <LoginButton />
     </Wrapper>;
   }
 
   if (!user) {
     return <Wrapper>
-      <h5>Not Sign In </h5>
+      <Status>Not Sign In </Status>
       <LoginButton />
     </Wrapper>
   }
-  useEffect(()=>{
-    if(user){
+  useEffect(() => {
+    if (user) {
       setCurrentUser(user.name);
       getUserRecords();
     }
-  },[currentUser])
+  }, [currentUser])
 
 
   return (
     isAuthenticated && (
       <Wrapper>
-        <Image src={user.picture} alt={user.name} /> <h5>{user.name}</h5>
+        <Image src={user.picture} alt={user.name} /> <Status>{user.name}</Status>
         <LogoutButton />
       </Wrapper>
     )
@@ -43,6 +44,13 @@ const Wrapper = styled.div`
 display: flex;
 float: right;
 margin-right: 2em;
+`;
+const Status = styled.h5`
+margin-right: 2em;
+vertical-align: middle;
+`;
+const ButtonWrapper = styled.div`
+
 `;
 const Image = styled.img`
 margin-right: 1em;

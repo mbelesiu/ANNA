@@ -6,7 +6,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import styled from 'styled-components';
 import axios from 'axios';
 import QuestionPrompt from './QuestionPrompt.jsx';
-import SignUp from './SignUp.jsx';
 import Records from './Records.jsx';
 import Entry from './Entry.jsx';
 import AskPrompts from './AskPrompts.jsx';
@@ -206,6 +205,7 @@ const Wrapper = styled.div`
   background: papayawhip;
   position: absolute;
 `;
+
 const Left = styled.div`
   float: left;
   width: 50%;
