@@ -29,7 +29,7 @@ To run this project:
 3) Install it locally using npm:
 
 ```
-$ cd ../athena
+$ cd ../ANNA
 $ npm install
 $ npm start
 ```
