@@ -1,7 +1,8 @@
-//const db = require('../../database');
-const db = require('../../postgres')
-const aqlQuery = require('arangojs').aqlQuery;
+// const db = require('../../database'); // arangodb
+// const aqlQuery = require('arangojs').aqlQuery;
+const db = require('../../postgres'); // postgres
 
+// arango methods
 // const loginMethods =
 // {
 //   login : (req, res) => {
@@ -34,8 +35,8 @@ const postgressLoginMethods =
   login : (req, res) => {
   const email = req.params.username;
   db.query(`SELECT * FROM users WHERE users.email = '${email}'`)
-    .then(({ data }) => {
-      if (!data) {
+    .then(( data ) => {
+      if (data.rows.length === 0) {
         db.query(`INSERT INTO users (email) VALUES ('${email}')`)
           .then(() => db.query(`INSERT INTO records (email) VALUES ('${email}')`))
           .then(() => {

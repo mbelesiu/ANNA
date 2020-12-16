@@ -8,7 +8,7 @@ const path = require('path');
 
 let { userTimeTable, startTimeTable } = require('./routes/timetable.js');
 const { login } = require('./routes/login.js');
-const { createPrompts, getPrompts, updatePrompt } = require('./routes/prompts.js');
+const { getPrompts, updatePrompt } = require('./routes/prompts.js');
 const { getRecords, createRecords } = require('./routes/records.js');
 const  {getItems, addTo}  = require('./routes/postgresPrompts.js')
 
@@ -52,7 +52,7 @@ app.get('/api/login/:username', login);
 
 /*Prompts Routes */
 app.get('/api/prompts/:username', getPrompts);
-app.post('/api/prompts/create/:username', createPrompts);
+app.post('/api/prompts/create/:username', updatePrompt);
 app.put('/api/prompts/update/:username', updatePrompt)
 
 
