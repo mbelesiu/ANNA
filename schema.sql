@@ -6,16 +6,20 @@ CREATE DATABASE anna;
 
 -- //DROP TABLE IF EXISTS messages;
 CREATE TABLE IF NOT EXISTS users (
-  des_id INTEGER,
+  user_id SERIAL PRIMARY KEY NOT NULL ,
   email VARCHAR(240),
   prompts TEXT[]
 );
 
 CREATE TABLE IF NOT EXISTS records (
-  img_id INTEGER,
+  record_id SERIAL PRIMARY KEY NOT NULL ,
   email VARCHAR(240),
-  entry TEXT[],
-  des_id INTEGER
+  entry TEXT[]
+);
+
+CREATE TABLE user_records (
+  user_id INTEGER REFERENCES users(user_id),
+  record_id INTEGER REFERENCES records(record_id)
 );
 
 -- The below were used when I seeded the databse the first time. I kept them inc ase I have some bugs since the above is untested as of 10/15/2020
