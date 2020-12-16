@@ -10,6 +10,7 @@ let { userTimeTable, startTimeTable } = require('./routes/timetable.js');
 const { login } = require('./routes/login.js');
 const { createPrompts, getPrompts, updatePrompt } = require('./routes/prompts.js');
 const { getRecords, createRecords } = require('./routes/records.js');
+const  {getItems, addTo}  = require('./routes/postgresPrompts.js')
 
 
 // dotenv.load();
@@ -41,6 +42,10 @@ userTimeTable = startTimeTable()
 //   // console.log('yo3')
 //   res.send(JSON.stringify(req.oidc.user));
 // });
+
+//postgres api test route
+app.get('/api/test', getItems);
+app.post('/api/test', addTo);
 
 //a not so great login, but suitable for MVP
 app.get('/api/login/:username', login);
