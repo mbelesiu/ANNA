@@ -1,4 +1,5 @@
 const db = require('../../database');
+//const db = require('../../postgres')
 const aqlQuery = require('arangojs').aqlQuery;
 
 const loginMethods =
@@ -28,7 +29,32 @@ const loginMethods =
     })
 }}
 
+const postgressLoginMethods =
+{
+  login : (req, res) => {
+  const email = req.params.username;
+  db.query(`SELECT * FROM users WHERE users.email = '${email}'`)
+    .then(({ data }) => {
+      if (!data) {
+        db.query(`INSERT INTO users (email) VALUES ('${email}')`)
+          .then(() => db.query(`INSERT INTO records (email) VALUES ('${email}')`))
+          .then(() => {
+             res.sendStatus(200)
+          })
+          .catch((err) => {
+            console.log(err)
+            res.sendStatus(404)
+          })
+      } else {
+        res.send(data.rows)
+      }
 
+    })
+    .catch((err) => {
+      console.log(err);
+      res.sendStatus(404)
+    })
+}}
 
 
 
