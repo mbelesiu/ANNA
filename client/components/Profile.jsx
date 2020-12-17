@@ -57,5 +57,3 @@ margin-right: 1em;
 height: 60px;
 width: 60px;
 `;
-
-//Test component to see how the user auth works in terms of retrieving data.

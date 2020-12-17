@@ -16,9 +16,6 @@ import LogoutButton from './LogoutButton.jsx';
 import Profile from './Profile.jsx'
 import MyCalendar from './MyCalendar.jsx';
 
-
-
-
 function App() {
   const [init, setInit] = useState(true);
   const [newUser, setNewUser] = useState(false);
@@ -41,7 +38,8 @@ function App() {
         setPrompts(data[0].prompts)
       })
       .catch((err) => (err));
-  }
+  };
+
   const submitPrompts = () => {
     if (!flag) {
       setFlag(true);
@@ -64,19 +62,12 @@ function App() {
       "prompts": newPrompts.splice(0, newPrompts.length - 1),
       "eod": newPrompts[newPrompts.length - 1]
     };
-    // newPrompts.forEach((prompt, i) => {
-    //   if (i === prompts.length - 1) {
-    //     data["EOD"] = prompt
-    //   } else {
-    //     data[`question${i}`] = prompt
-    //   }
-    // })
 
     axios.put(`/api/prompts/update/${currentUser}`, data)
       .then(() => getUserPrompts())
       .catch((err) => console.log(err));
     setShowChangePromptModal(false)
-  }
+  };
 
   const getUserRecords = () => {
     axios.get(`/api/records/${currentUser}`)
@@ -98,7 +89,7 @@ function App() {
         setRecords(currentRecords.entry);
       })
       .catch((err) => (err));
-  }
+  };
 
   const submitRecord = () => {
     const date = new Date()
@@ -107,10 +98,7 @@ function App() {
     axios.post(`/api/records/create/${currentUser}`, newRecord)
       .then(() => getUserRecords())
       .catch((err) => console.log(err));
-  }
-
-
-
+  };
 
   const submitSignUp = () => {
     if (currentUser) {
@@ -131,18 +119,19 @@ function App() {
         .catch((err) => console.log(err))
 
     }
-  }
+  };
 
   const sendLogout = () => {
     axios.get(`/logout`)
       .then((response) => console.log(response))
       .catch((err) => console.log(err))
-  }
+  };
+
   const sendLogin = () => {
     axios.get(`/login`)
       .then((response) => console.log(response))
       .catch((err) => console.log(err))
-  }
+  };
 
   useEffect(() => {
     if (flag) {
@@ -154,7 +143,7 @@ function App() {
 
   useEffect(() => {
     submitSignUp()
-  }, [currentUser])
+  }, [currentUser]);
 
   return (
     <Wrapper>
@@ -179,7 +168,6 @@ function App() {
         currentTime={time}
         updatePrompts={updatePrompts}
       />
-      {/* <SignUp display={init} showSignup={setInit} dataSend={submitSignUp} /> */}
 
       <QuestionPrompt promptsCount={prompts.length + 1} addToPrompts={setPrompts} finalQuestion={finalQuestion} setFinalQuestion={setFinalQuestion} showQuestions={newUser} submitPrompts={submitPrompts} setFlag={setFlag} />
       <Right>

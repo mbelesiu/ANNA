@@ -1,8 +1,4 @@
-// const dotenv = require('dotenv');
 const express = require('express');
-// const { auth } = require('express-openid-connect');
-// const { requiresAuth } = require('express-openid-connect');
-// const configAuthO = require('./configs/configAuthO.js')
 const bodyParser = require('body-parser');
 const path = require('path');
 
@@ -12,36 +8,14 @@ const { getPrompts, updatePrompt } = require('./routes/prompts.js');
 const { getRecords, createRecords } = require('./routes/records.js');
 const  {getItems, addTo}  = require('./routes/postgresPrompts.js')
 
-
-// dotenv.load();
-
 const app = express();
 const aqlQuery = require('arangojs').aqlQuery;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '/../public')));
-// app.use(auth(configAuthO));
-// Middleware to make the `user` object available for all views
-// app.use(function (req, res, next) {
-//   res.locals.user = req.oidc.user;
-//   // console.log(res.locals.user)
-//   next();
-// });
-
 
 userTimeTable = startTimeTable()
-
-// req.isAuthenticated is provided from the auth router
-// app.get('/', (req, res) => {
-//   console.log('yo2')
-//   res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
-// });
-
-// app.get('/profile', requiresAuth(), (req, res) => {
-//   // console.log('yo3')
-//   res.send(JSON.stringify(req.oidc.user));
-// });
 
 //postgres api test route
 app.get('/api/test', getItems);
