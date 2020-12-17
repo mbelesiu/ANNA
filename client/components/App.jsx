@@ -30,7 +30,7 @@ function App() {
   const [promptTime, setPromptTime] = useState(false); //allowing user to answer prompt
   const [showPromptModal, setShowPromptModal] = useState(false); //show quetionaire
   const [showChangePromptModal, setShowChangePromptModal] = useState(false);
-  const [responses, setResponses] = useState({});
+  const [responses, setResponses] = useState([]);
   const [flag, setFlag] = useState(false);
   const [time, setTime] = useState();
 
@@ -38,17 +38,19 @@ function App() {
     setPrompts([])
     axios.get(`/api/prompts/${username}`)
       .then(({ data }) => {
-        let temp = [];
-        data = data[0].prompts;
-        for (prompt in data) {
-          if (prompt === 'EOD') {
-            setTime(data[prompt]);
-          } else {
-            temp.push(data[prompt]);
-          }
-        }
-        temp.reverse()
-        setPrompts(temp)
+        //with postgres, youll probably have to remove the curly brackets
+        //also since you are getting it as an array obj, you might be in luck
+        // let temp = [];
+        // data = data[0].prompts;
+        // for (prompt in data) {
+        //   if (prompt === 'EOD') {
+        //     setTime(data[prompt]);
+        //   } else {
+        //     temp.push(data[prompt]);
+        //   }
+        // }
+        // temp.reverse()
+        setPrompts(data[0].prompts)
       })
       .catch((err) => (err));
   }
@@ -70,7 +72,13 @@ function App() {
   const getUserRecords = () => {
     axios.get(`/api/records/${currentUser}`)
       .then(({ data }) => {
-        setRecords(data[0].entry);
+        const currentRecords = {};
+        for (let i = 0; i < data[0].entry.length; i++){
+          // console.log(`records from get ${data[0].entry[i]}`);
+          currentRecords[data[0].prompts[i]] = data[0].entry[i]
+        }
+        console.log(currentRecords)
+        // setRecords(currentRecords);
       })
       .catch((err) => (err));
   }
@@ -78,7 +86,7 @@ function App() {
   const submitRecord = () => {
     const date = new Date()
     const newRecord = { date: date.toDateString() }
-    newRecord['body'] = responses;
+    newRecord['entry'] = responses;
     axios.post(`/api/records/create/${currentUser}`, newRecord)
       .then(() => getUserRecords())
       .catch((err) => console.log(err));
@@ -88,14 +96,17 @@ function App() {
     if (!flag) {
       setFlag(true);
     } else {
-      const data = {};
-      prompts.forEach((prompt, i) => {
-        if (i === prompts.length - 1) {
-          data["EOD"] = prompt
-        } else {
-          data[`question${i}`] = prompt
-        }
-      })
+      const data = {
+        "prompts" : prompts.splice(0,prompts.length-1),
+        "eod" : prompts[prompts.length-1]
+      };
+      // prompts.forEach((prompt, i) => {
+      //   if (i === prompts.length - 1) {
+      //     data["EOD"] = prompt
+      //   } else {
+      //     data[`question${i}`] = prompt
+      //   }
+      // })
       axios.post(`/api/prompts/create/${currentUser}`, data)
         .then(() => {
           setNewUser(false);
@@ -109,16 +120,15 @@ function App() {
     if (currentUser) {
       axios.get(`/api/login/${currentUser}`)
         .then(({ data }) => {
-           setCurrentUser(user);
+           setCurrentUser(currentUser);
           if (data === "OK") {
+
             setNewUser(true)
           } else {
             setNewUser(false);
             data = data[0].prompts;
             for (prompt in data) {
-              if (prompt !== 'EOD') {
                 setPrompts(prevPrompts => [...prevPrompts, data[prompt]]);
-              }
             }
           }
         })

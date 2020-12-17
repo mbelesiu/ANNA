@@ -19,15 +19,15 @@ const postgresPromptMethods = {
   },
   updatePrompt: (req, res) => {
     const email = req.params.username
-    const prompts = [];
-    let eod;
-    for (i in req.body) {
-      if (i === 'EOD') {
-        eod = req.body[i]
-      } else {
-        prompts.push(req.body[i])
-      }
-    }
+    const prompts = req.body.prompts;
+    const eod= req.body.eod;
+    // for (i in req.body) {
+    //   if (i === 'EOD') {
+    //     eod = req.body[i]
+    //   } else {
+    //     prompts.push(req.body[i])
+    //   }
+    // }
 
     db.query(`UPDATE users SET prompts = '{${prompts}}', eod = '${eod}' WHERE users.email = '${email}'`)
       .then(() => {
