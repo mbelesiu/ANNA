@@ -35,7 +35,8 @@ const recordMethods = {
 const postgresRecordMethods = {
   getRecords: (req, res) => {
     const email = req.params.username
-    db.query(`SELECT * FROM records WHERE records.email = '${email}'`)
+    // db.query(`SELECT * FROM records WHERE records.email = '${email}'`)
+    db.query(`SELECT records.record_id, users.email, records.date, users.prompts, records.entry FROM records, users WHERE users.email = records.email AND users.email = '${email}'`)
       .then((data) => {
         // console.log(data.rows[0].entry[0])
         res.send(data.rows)
