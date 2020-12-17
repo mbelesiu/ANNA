@@ -72,13 +72,21 @@ function App() {
   const getUserRecords = () => {
     axios.get(`/api/records/${currentUser}`)
       .then(({ data }) => {
-        const currentRecords = {};
-        for (let i = 0; i < data[0].entry.length; i++){
-          // console.log(`records from get ${data[0].entry[i]}`);
-          currentRecords[data[0].prompts[i]] = data[0].entry[i]
+        const currentRecords = { entry: [] };
+        for (let i = 0; i < data.length; i++) {
+          let body = {};
+          for (let j = 0; j < data[i].prompts.length; j++) {
+            body[data[i].prompts[j]] = data[i].entry[j];
+          }
+          currentRecords.entry.push({
+            'date' : data[i].date,
+            'body' : body,
+            'id' : data[i].record_id
+          })
         }
-        console.log(currentRecords)
-        // setRecords(currentRecords);
+
+        console.log(currentRecords.entry)
+        setRecords(currentRecords.entry);
       })
       .catch((err) => (err));
   }
@@ -97,8 +105,8 @@ function App() {
       setFlag(true);
     } else {
       const data = {
-        "prompts" : prompts.splice(0,prompts.length-1),
-        "eod" : prompts[prompts.length-1]
+        "prompts": prompts.splice(0, prompts.length - 1),
+        "eod": prompts[prompts.length - 1]
       };
       // prompts.forEach((prompt, i) => {
       //   if (i === prompts.length - 1) {
@@ -120,7 +128,7 @@ function App() {
     if (currentUser) {
       axios.get(`/api/login/${currentUser}`)
         .then(({ data }) => {
-           setCurrentUser(currentUser);
+          setCurrentUser(currentUser);
           if (data === "OK") {
 
             setNewUser(true)
@@ -128,7 +136,7 @@ function App() {
             setNewUser(false);
             data = data[0].prompts;
             for (prompt in data) {
-                setPrompts(prevPrompts => [...prevPrompts, data[prompt]]);
+              setPrompts(prevPrompts => [...prevPrompts, data[prompt]]);
             }
           }
         })
@@ -162,7 +170,7 @@ function App() {
 
   return (
     <Wrapper>
-      <Profile setCurrentUser={setCurrentUser} getUserRecords={getUserRecords} currentUser={currentUser}/>
+      <Profile setCurrentUser={setCurrentUser} getUserRecords={getUserRecords} currentUser={currentUser} />
       <NavBar />
       <AskPrompts
         prompts={prompts}
@@ -194,7 +202,7 @@ function App() {
         <h3>Previous Entries</h3>
         <Button onClick={() => setShowPromptModal(true)}>ANSWER TODAY'S PROMPTS</Button>
         <Button onClick={() => setShowChangePromptModal(true)}>UPDATE PROMPTS</Button>
-        <MyCalendar records={records} showRecord={setCurrentRecord}/>
+        <MyCalendar records={records} showRecord={setCurrentRecord} />
         <Records records={records} showRecord={setCurrentRecord} />
 
       </Left>
