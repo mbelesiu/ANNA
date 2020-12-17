@@ -12,9 +12,8 @@ function AskPrompts({ prompts, getPrompts, currentUser, showPrompts, hidePrompts
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const question = `question${currentQuestion + 1}`
     const r = responses;
-    r[currentPrompt] = currentResponse;
+    r.push(currentResponse);
     setResponses(r);
     setCurrentQuestion(currentQuestion + 1);
     setCurrentResponse('');

@@ -4,7 +4,6 @@ import styled from 'styled-components';
 function QuestionPrompt({ promptsCount, addToPrompts, finalQuestion, setFinalQuestion, showQuestions, submitPrompts, setFlag }) {
   const [currentPrompt, setCurrentPrompt] = useState('');
   const [time, setTime] = useState('');
-  // const [flag, setFlag] = useState(false);
   const currentQuestion = `question${promptsCount}`;
 
   const handleSubmit = (event, flag1, flag2) => {

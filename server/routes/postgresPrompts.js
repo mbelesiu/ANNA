@@ -2,7 +2,6 @@ const db = require('../../postgres/index.js');
 
 const postGresRoutes = {
    getItems: (req, res) => {
-    // const { product_id } = req.params;
 
     db.query(`SELECT * FROM users`)
       .then((data) => { res.send(data.rows) })

@@ -16,9 +16,6 @@ import LogoutButton from './LogoutButton.jsx';
 import Profile from './Profile.jsx'
 import MyCalendar from './MyCalendar.jsx';
 
-
-
-
 function App() {
   const [init, setInit] = useState(true);
   const [newUser, setNewUser] = useState(false);
@@ -30,7 +27,7 @@ function App() {
   const [promptTime, setPromptTime] = useState(false); //allowing user to answer prompt
   const [showPromptModal, setShowPromptModal] = useState(false); //show quetionaire
   const [showChangePromptModal, setShowChangePromptModal] = useState(false);
-  const [responses, setResponses] = useState({});
+  const [responses, setResponses] = useState([]);
   const [flag, setFlag] = useState(false);
   const [time, setTime] = useState();
 
@@ -38,64 +35,20 @@ function App() {
     setPrompts([])
     axios.get(`/api/prompts/${username}`)
       .then(({ data }) => {
-        let temp = [];
-        data = data[0].prompts;
-        for (prompt in data) {
-          if (prompt === 'EOD') {
-            setTime(data[prompt]);
-          } else {
-            temp.push(data[prompt]);
-          }
-        }
-        temp.reverse()
-        setPrompts(temp)
+        setPrompts(data[0].prompts)
       })
       .catch((err) => (err));
-  }
-  const updatePrompts = (newPrompts) => {
-    const data = {};
-    newPrompts.forEach((prompt, i) => {
-      if (i === prompts.length - 1) {
-        data["EOD"] = prompt
-      } else {
-        data[`question${i}`] = prompt
-      }
-    })
-    axios.put(`/api/prompts/update/${currentUser}`, data)
-      .then(() => getUserPrompts())
-      .catch((err) => console.log(err));
-    setShowChangePromptModal(false)
-  }
-
-  const getUserRecords = () => {
-    axios.get(`/api/records/${currentUser}`)
-      .then(({ data }) => {
-        setRecords(data[0].entry);
-      })
-      .catch((err) => (err));
-  }
-
-  const submitRecord = () => {
-    const date = new Date()
-    const newRecord = { date: date.toDateString() }
-    newRecord['body'] = responses;
-    axios.post(`/api/records/create/${currentUser}`, newRecord)
-      .then(() => getUserRecords())
-      .catch((err) => console.log(err));
-  }
+  };
 
   const submitPrompts = () => {
     if (!flag) {
       setFlag(true);
     } else {
-      const data = {};
-      prompts.forEach((prompt, i) => {
-        if (i === prompts.length - 1) {
-          data["EOD"] = prompt
-        } else {
-          data[`question${i}`] = prompt
-        }
-      })
+      const data = {
+        "prompts": prompts.splice(0, prompts.length - 1),
+        "eod": prompts[prompts.length - 1]
+      };
+
       axios.post(`/api/prompts/create/${currentUser}`, data)
         .then(() => {
           setNewUser(false);
@@ -104,39 +57,81 @@ function App() {
     }
   };
 
+  const updatePrompts = (newPrompts) => {
+    const data = {
+      "prompts": newPrompts.splice(0, newPrompts.length - 1),
+      "eod": newPrompts[newPrompts.length - 1]
+    };
+
+    axios.put(`/api/prompts/update/${currentUser}`, data)
+      .then(() => getUserPrompts())
+      .catch((err) => console.log(err));
+    setShowChangePromptModal(false)
+  };
+
+  const getUserRecords = () => {
+    axios.get(`/api/records/${currentUser}`)
+      .then(({ data }) => {
+        const currentRecords = { entry: [] };
+        for (let i = 0; i < data.length; i++) {
+          let body = {};
+          for (let j = 0; j < data[i].prompts.length; j++) {
+            body[data[i].prompts[j]] = data[i].entry[j];
+          }
+          currentRecords.entry.push({
+            'date': data[i].date,
+            'body': body,
+            'id': data[i].record_id
+          })
+        }
+
+        console.log(currentRecords.entry)
+        setRecords(currentRecords.entry);
+      })
+      .catch((err) => (err));
+  };
+
+  const submitRecord = () => {
+    const date = new Date()
+    const newRecord = { date: date.toDateString() }
+    newRecord['entry'] = responses;
+    axios.post(`/api/records/create/${currentUser}`, newRecord)
+      .then(() => getUserRecords())
+      .catch((err) => console.log(err));
+  };
 
   const submitSignUp = () => {
     if (currentUser) {
       axios.get(`/api/login/${currentUser}`)
         .then(({ data }) => {
-           setCurrentUser(user);
+          setCurrentUser(currentUser);
           if (data === "OK") {
+
             setNewUser(true)
           } else {
             setNewUser(false);
             data = data[0].prompts;
             for (prompt in data) {
-              if (prompt !== 'EOD') {
-                setPrompts(prevPrompts => [...prevPrompts, data[prompt]]);
-              }
+              setPrompts(prevPrompts => [...prevPrompts, data[prompt]]);
             }
           }
         })
         .catch((err) => console.log(err))
 
     }
-  }
+  };
 
   const sendLogout = () => {
     axios.get(`/logout`)
       .then((response) => console.log(response))
       .catch((err) => console.log(err))
-  }
+  };
+
   const sendLogin = () => {
     axios.get(`/login`)
       .then((response) => console.log(response))
       .catch((err) => console.log(err))
-  }
+  };
 
   useEffect(() => {
     if (flag) {
@@ -148,11 +143,11 @@ function App() {
 
   useEffect(() => {
     submitSignUp()
-  }, [currentUser])
+  }, [currentUser]);
 
   return (
     <Wrapper>
-      <Profile setCurrentUser={setCurrentUser} getUserRecords={getUserRecords} currentUser={currentUser}/>
+      <Profile setCurrentUser={setCurrentUser} getUserRecords={getUserRecords} currentUser={currentUser} />
       <NavBar />
       <AskPrompts
         prompts={prompts}
@@ -173,7 +168,6 @@ function App() {
         currentTime={time}
         updatePrompts={updatePrompts}
       />
-      {/* <SignUp display={init} showSignup={setInit} dataSend={submitSignUp} /> */}
 
       <QuestionPrompt promptsCount={prompts.length + 1} addToPrompts={setPrompts} finalQuestion={finalQuestion} setFinalQuestion={setFinalQuestion} showQuestions={newUser} submitPrompts={submitPrompts} setFlag={setFlag} />
       <Right>
@@ -184,12 +178,12 @@ function App() {
         <h3>Previous Entries</h3>
         <Button onClick={() => setShowPromptModal(true)}>ANSWER TODAY'S PROMPTS</Button>
         <Button onClick={() => setShowChangePromptModal(true)}>UPDATE PROMPTS</Button>
-        <MyCalendar records={records} showRecord={setCurrentRecord}/>
+        <MyCalendar records={records} showRecord={setCurrentRecord} />
         <Records records={records} showRecord={setCurrentRecord} />
 
       </Left>
       <Footer>
-        A.N.N.A MK.1
+        A.N.N.A MK.2
         By Matthew James Belesiu
       </Footer>
 

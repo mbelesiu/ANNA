@@ -8,13 +8,15 @@ CREATE DATABASE anna;
 CREATE TABLE IF NOT EXISTS users (
   user_id SERIAL PRIMARY KEY NOT NULL ,
   email VARCHAR(240),
+  EOD VARCHAR(10),
   prompts TEXT[]
 );
 
 CREATE TABLE IF NOT EXISTS records (
   record_id SERIAL PRIMARY KEY NOT NULL ,
   email VARCHAR(240),
-  entry TEXT[]
+  entry TEXT[],
+  date VARCHAR(100)
 );
 
 CREATE TABLE user_records (

@@ -18,9 +18,6 @@ function MyCaledar({ records, showRecord }) {
   const tileClassName = ({ date, view }) => view === 'month' && date.getDay() % 2 === 0 ? 'even' : null;
 
   const hasRecord = ({ date, view }) => {
-    // console.log('badgar')
-    //  console.log(dateHasRecord.indexOf(moment(date).format('ddd MMM D YYYY')))
-    //  console.log(dateHasRecord)
     if (view === 'month' && dateHasRecord.indexOf(moment(date).format('ddd MMM DD YYYY')) !== -1) {
       return 'hasRecord';
     }
@@ -52,7 +49,6 @@ function MyCaledar({ records, showRecord }) {
 
   })
 
-
   return (
     <>
       <Calendar
@@ -60,7 +56,7 @@ function MyCaledar({ records, showRecord }) {
         onChange={setDateState}
         tileClassName={hasRecord}
         onClickDay={showPastRecord}
-        onActiveStartDateChange={()=>setChangeCalendarView(!changeCalendarView)}
+        onActiveStartDateChange={() => setChangeCalendarView(!changeCalendarView)}
       />
       <p>Current selected date is <b>{moment(dateState).format('ddd MMM DD YYYY')}</b></p>
     </>
