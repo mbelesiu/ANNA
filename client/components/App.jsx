@@ -38,31 +38,40 @@ function App() {
     setPrompts([])
     axios.get(`/api/prompts/${username}`)
       .then(({ data }) => {
-        //with postgres, youll probably have to remove the curly brackets
-        //also since you are getting it as an array obj, you might be in luck
-        // let temp = [];
-        // data = data[0].prompts;
-        // for (prompt in data) {
-        //   if (prompt === 'EOD') {
-        //     setTime(data[prompt]);
-        //   } else {
-        //     temp.push(data[prompt]);
-        //   }
-        // }
-        // temp.reverse()
         setPrompts(data[0].prompts)
       })
       .catch((err) => (err));
   }
+  const submitPrompts = () => {
+    if (!flag) {
+      setFlag(true);
+    } else {
+      const data = {
+        "prompts": prompts.splice(0, prompts.length - 1),
+        "eod": prompts[prompts.length - 1]
+      };
+
+      axios.post(`/api/prompts/create/${currentUser}`, data)
+        .then(() => {
+          setNewUser(false);
+        })
+        .catch((err) => console.log(err))
+    }
+  };
+
   const updatePrompts = (newPrompts) => {
-    const data = {};
-    newPrompts.forEach((prompt, i) => {
-      if (i === prompts.length - 1) {
-        data["EOD"] = prompt
-      } else {
-        data[`question${i}`] = prompt
-      }
-    })
+    const data = {
+      "prompts": newPrompts.splice(0, newPrompts.length - 1),
+      "eod": newPrompts[newPrompts.length - 1]
+    };
+    // newPrompts.forEach((prompt, i) => {
+    //   if (i === prompts.length - 1) {
+    //     data["EOD"] = prompt
+    //   } else {
+    //     data[`question${i}`] = prompt
+    //   }
+    // })
+
     axios.put(`/api/prompts/update/${currentUser}`, data)
       .then(() => getUserPrompts())
       .catch((err) => console.log(err));
@@ -79,9 +88,9 @@ function App() {
             body[data[i].prompts[j]] = data[i].entry[j];
           }
           currentRecords.entry.push({
-            'date' : data[i].date,
-            'body' : body,
-            'id' : data[i].record_id
+            'date': data[i].date,
+            'body': body,
+            'id': data[i].record_id
           })
         }
 
@@ -100,28 +109,7 @@ function App() {
       .catch((err) => console.log(err));
   }
 
-  const submitPrompts = () => {
-    if (!flag) {
-      setFlag(true);
-    } else {
-      const data = {
-        "prompts": prompts.splice(0, prompts.length - 1),
-        "eod": prompts[prompts.length - 1]
-      };
-      // prompts.forEach((prompt, i) => {
-      //   if (i === prompts.length - 1) {
-      //     data["EOD"] = prompt
-      //   } else {
-      //     data[`question${i}`] = prompt
-      //   }
-      // })
-      axios.post(`/api/prompts/create/${currentUser}`, data)
-        .then(() => {
-          setNewUser(false);
-        })
-        .catch((err) => console.log(err))
-    }
-  };
+
 
 
   const submitSignUp = () => {
