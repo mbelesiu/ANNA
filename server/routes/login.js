@@ -10,7 +10,6 @@ const postgressLoginMethods =
     .then(( data ) => {
       if (data.rows.length === 0) {
         db.query(`INSERT INTO users (email) VALUES ('${email}')`)
-          // .then(() => db.query(`INSERT INTO records (email) VALUES ('${email}')`))
           .then(() => {
              res.sendStatus(200)
           })

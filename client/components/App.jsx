@@ -195,7 +195,7 @@ function App() {
 
       </Left>
       <Footer>
-        A.N.N.A MK.1
+        A.N.N.A MK.2
         By Matthew James Belesiu
       </Footer>
 
