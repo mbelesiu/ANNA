@@ -15,7 +15,8 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS records (
   record_id SERIAL PRIMARY KEY NOT NULL ,
   email VARCHAR(240),
-  entry TEXT[]
+  entry TEXT[],
+  date VARCHAR(100)
 );
 
 CREATE TABLE user_records (
