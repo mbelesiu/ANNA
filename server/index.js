@@ -17,21 +17,17 @@ app.use(express.static(path.join(__dirname, '/../public')));
 
 userTimeTable = startTimeTable()
 
-// postgres api test route
-// this was an experimental test case. For me to learn postgres
-// app.get('/api/test', getItems);
-// app.post('/api/test', addTo);
 
-//a not so great login, but suitable for MVP
+/** Login Routes **/
 app.get('/api/login/:username', login);
 
-/*Prompts Routes */
+/** Prompts Routes **/
 app.get('/api/prompts/:username', getPrompts);
 app.post('/api/prompts/create/:username', updatePrompt);
 app.put('/api/prompts/update/:username', updatePrompt)
 
 
-/**Records Routes **/
+/** Records Routes **/
 app.get('/api/records/:username', getRecords);
 app.post('/api/records/create/:username', createRecords);
 
