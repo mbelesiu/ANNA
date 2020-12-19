@@ -27,7 +27,6 @@ const postgressTimeTable = {
       .catch((err) => console.log(err))
   },
   updateTimeTable: (time, username)=>{
-    console.log(time)
     userTimeTable[username] = scheduleKeeper(time, username);
   }
 }
