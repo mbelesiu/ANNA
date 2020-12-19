@@ -18,6 +18,7 @@ const postgressTimeTable = {
               .then(() => console.log('delete incomplete data from User'))
           } else {
             const time = savedUser.eod.split(':');
+            console.log(time)
             tempTable[savedUser.email] = scheduleKeeper(time, savedUser.email);
           }
           return tempTable;
@@ -26,6 +27,7 @@ const postgressTimeTable = {
       .catch((err) => console.log(err))
   },
   updateTimeTable: (time, username)=>{
+    console.log(time)
     userTimeTable[username] = scheduleKeeper(time, username);
   }
 }

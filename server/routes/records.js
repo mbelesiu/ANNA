@@ -9,14 +9,11 @@ const postgresRecordMethods = {
       .then((data) => {
 
         for(let i = 0; i < data.rows.length; i++){
-          // console.log(data.rows[i])
           for ( let j = 0; j < data.rows[i].entry.length; j++){
             data.rows[i].entry[j] = decodeURIComponent(data.rows[i].entry[j])
             data.rows[i].entry[j] = _.unescape(data.rows[i].entry[j]);
             data.rows[i].prompts[j] = decodeURIComponent(data.rows[i].prompts[j])
             data.rows[i].prompts[j] = _.unescape(data.rows[i].prompts[j]);
-
-            // console.log(data.rows[i].entry[j])
           }
         }
         res.send(data.rows)
@@ -30,13 +27,10 @@ const postgresRecordMethods = {
     const email = req.params.username;
     const date = req.body.date;
     const newEntry = req.body.entry;
-    // console.log(newEntry)
-    // console.log('----------')
     for(let i = 0; i < newEntry.length; i++){
       newEntry[i] = _.escape(newEntry[i]);
       newEntry[i] = encodeURIComponent(newEntry[i]);
     }
-    // console.log(newEntry)
     db.query(`INSERT INTO records (email, entry, date) VALUES ('${email}',  $$ {${newEntry}} $$ , '${date}')`)
       .then(() => res.sendStatus(200))
       .catch((err) => {
