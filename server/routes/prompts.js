@@ -1,4 +1,4 @@
-const db = require('../../postgres'); // postgres
+const db = require('../../database/postgres'); // postgres
 const _ = require('underscore');
 const scheduleKeeper = require('./scheduleKeeper.js');
 let { userTimeTable } = require('./timetable.js');

@@ -1,4 +1,4 @@
-const db = require('../../postgres'); // postgres
+const db = require('../../database/postgres'); // postgres
 
 const postgressLoginMethods =
 {
