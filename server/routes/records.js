@@ -28,7 +28,6 @@ const postgresRecordMethods = {
     for(let i = 0; i < newEntry.length; i++){
       newEntry[i] = _.escape(newEntry[i]);
     }
-    console.log(newEntry)
     db.query(`INSERT INTO records (email, entry, date) VALUES ('${email}',  '{${newEntry}}' , '${date}')`)
       .then(() => res.sendStatus(200))
       .catch((err) => {
