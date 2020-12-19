@@ -1,5 +1,5 @@
 const db = require('../../postgres/index.js');
-
+// this was an experimental test case. For me to learn postgres
 const postGresRoutes = {
    getItems: (req, res) => {
 

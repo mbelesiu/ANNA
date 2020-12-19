@@ -1,4 +1,5 @@
 const db = require('../../postgres'); // postgres
+const _ = require('underscore');
 const scheduleKeeper = require('./scheduleKeeper.js');
 let { userTimeTable } = require('./timetable.js');
 
@@ -8,6 +9,12 @@ const postgresPromptMethods = {
     const email = req.params.username
     db.query(`SELECT * FROM users WHERE users.email = '${email}'`)
       .then((data) => {
+        for(let i = 0; i < data.rows.length; i++){
+          for ( let j = 0; j < data.rows[i].prompts.length; j++){
+            data.rows[i].prompts[j] = _.unescape(data.rows[i].prompts[j]);
+          }
+        }
+
         res.send(data.rows);
       })
       .catch((err) => {
@@ -20,7 +27,11 @@ const postgresPromptMethods = {
     const prompts = req.body.prompts;
     const eod= req.body.eod;
 
-    db.query(`UPDATE users SET prompts = '{${prompts}}', eod = '${eod}' WHERE users.email = '${email}'`)
+    for(let i = 0; i < prompts.length; i++){
+      prompts[i] = _.escape(prompts[i]);
+    }
+
+    db.query(`UPDATE users SET prompts =  '{${prompts}}' , eod = '${eod}' WHERE users.email = '${email}'`)
       .then(() => {
         const time = eod.split(':')
         if (userTimeTable[email]) {
