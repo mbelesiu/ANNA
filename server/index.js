@@ -6,7 +6,7 @@ let { userTimeTable, startTimeTable } = require('./routes/timetable.js');
 const { login } = require('./routes/login.js');
 const { getPrompts, updatePrompt } = require('./routes/prompts.js');
 const { getRecords, createRecords } = require('./routes/records.js');
-const  {getItems, addTo}  = require('./routes/postgresPrompts.js')
+
 
 const app = express();
 const aqlQuery = require('arangojs').aqlQuery;
