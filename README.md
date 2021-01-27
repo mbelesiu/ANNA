@@ -4,7 +4,7 @@
 <img src="https://github.com/mbelesiu/athena/blob/main/annalogo.jpg" width="278 px" height="273.5 px">
 </p>
 
-<p align="center"> https://autonote.page </p>
+<p align="center" href="https://autonote.page/"> ANNA is live</p>
 
 ## A.N.N.A.               
 ## Table of contents
