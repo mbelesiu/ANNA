@@ -1,6 +1,6 @@
 const db = require('../../database/postgres'); // postgres
 const _ = require('underscore');
-const scheduleKeeper = require('./scheduleKeeper.js');
+const { scheduleKeeper } = require('./scheduleKeeper.js');
 let { userTimeTable } = require('./timetable.js');
 
 const postgresPromptMethods = {

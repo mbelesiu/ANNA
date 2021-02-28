@@ -1,5 +1,5 @@
 const db = require('../../database/postgres'); // postgres
-const scheduleKeeper = require('./scheduleKeeper.js')
+const {scheduleKeeper} = require('./scheduleKeeper.js')
 
 
 const postgressTimeTable = {
@@ -26,6 +26,7 @@ const postgressTimeTable = {
       .catch((err) => console.log(err))
   },
   updateTimeTable: (time, username)=>{
+    userTimeTable[username].cancel();
     userTimeTable[username] = scheduleKeeper(time, username);
   }
 }
