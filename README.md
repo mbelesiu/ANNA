@@ -22,7 +22,7 @@ Project is created with:
 * React with Hooks
 * Node.js
 * Express
-* PostgreSql
+* PostgreSQL
 * ~~ArangoDB~~
 * Webpack
 	
