@@ -4,7 +4,7 @@
 <img src="https://github.com/mbelesiu/athena/blob/main/annalogo.jpg" width="278 px" height="273.5 px">
 </p>
 
-## ~~**[Click me for Live Demos!](https://autonote.page/)**~~
+<!--- ## ~~**[Click me for Live Demos!](https://autonote.page/)**~~ --->
 
 
 ## A.N.N.A.               
